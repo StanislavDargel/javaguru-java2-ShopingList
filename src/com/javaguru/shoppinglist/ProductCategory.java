@@ -19,11 +19,8 @@ public enum ProductCategory {
     }
 
     public static void printProductCategory() {
-        int categorySequence = 1;
-
-        for(ProductCategory category: ProductCategory.values()) {
-            System.out.println(categorySequence + ". " + category);
-            categorySequence++;
+        for (ProductCategory category : ProductCategory.values()) {
+            System.out.println(category.ordinal() + ". " + category);
         }
     }
 

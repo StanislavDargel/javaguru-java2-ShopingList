@@ -91,31 +91,14 @@ public class Product {
 
     @Override
     public String toString() {
-        if (description != null && !description.isEmpty() && discount != null) {
-            return "\nName: " + name +
-                    "\nID: " + id +
-                    "\nRegular Price: " + price +
-                    "\nCategory: " + category +
-                    "\nDiscount: " + discount.movePointRight(2) + "%" +
-                    "\nActual Price: " + actualPrice +
-                    "\nDescription: " + description;
-        } else if (discount != null) {
-            return "\nName: " + name +
-                    "\nID: " + id +
-                    "\nRegular Price: " + price +
-                    "\nCategory: " + category +
-                    "\nDiscount: " + discount.movePointRight(2) + "%" +
-                    "\nActual Price: " + actualPrice;
-        } else if (description != null && !description.isEmpty()) {
-            return "\nName: " + name +
-                    "\nID: " + id +
-                    "\nActual Price: " + price +
-                    "\nCategory: " + category +
-                    "\nDescription: " + description;
-        }
-        return "\nName: " + name +
-                "\nID: " + id +
-                "\nActual Price: " + price +
-                "\nCategory: " + category;
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", category=" + category +
+                ", discount=" + discount +
+                ", description='" + description + '\'' +
+                ", actualPrice=" + actualPrice +
+                '}';
     }
 }
