@@ -1,4 +1,4 @@
-package com.javaguru.shoppinglist;
+package com.javaguru.shoppinglist.domain;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -69,7 +69,6 @@ public class Product {
         this.price = price;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -90,7 +89,8 @@ public class Product {
     }
 
     @Override
-    public String toString() {
+    public String
+    toString() {
         return "Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
