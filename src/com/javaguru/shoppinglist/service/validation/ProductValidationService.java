@@ -15,6 +15,7 @@ public class ProductValidationService {
         validationRules.add(new ProductCategoryValidationRule());
         validationRules.add(new ProductDiscountValidationRule());
         validationRules.add(new ProductDescriptionValidationRule());
+        validationRules.add(new ProductActualPriceValidationRule());
     }
 
     public static ProductValidationService getProductService() {

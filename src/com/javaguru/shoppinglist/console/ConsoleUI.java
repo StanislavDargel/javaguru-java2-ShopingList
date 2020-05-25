@@ -6,6 +6,7 @@ import com.javaguru.shoppinglist.repository.ProductRepositoryImp;
 import com.javaguru.shoppinglist.service.ValidationService;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Scanner;
 
 public class ConsoleUI {
@@ -74,11 +75,13 @@ public class ConsoleUI {
         choiceCategories(product);
         System.out.println("Enter product name: ");
         String name = scanner.nextLine();
-        product.setName(name);
+        product.setName(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase());
         System.out.println("Enter product price: ");
         BigDecimal price = new BigDecimal(scanner.nextLine());
-        product.setPrice(price);
+        product.setPrice(price.setScale(2, RoundingMode.HALF_EVEN));
         if (price.compareTo(new BigDecimal(20.00)) < 0) {
+            product.setDiscount(BigDecimal.ZERO);
+            product.setActualPrice(BigDecimal.ZERO);
             System.out.println("To set Discount on product, Product price must be more than 20.00 Euro");
         } else {
             System.out.println("Do you want set discount on product (Y/N)?");
@@ -87,7 +90,8 @@ public class ConsoleUI {
                 case "Y":
                     System.out.println("Enter product discount: ");
                     BigDecimal discount = new BigDecimal(scanner.nextLine());
-                    product.setDiscount(discount);
+                    product.setDiscount(discount.setScale(1, RoundingMode.HALF_EVEN));
+                    product.setActualPrice(price.subtract(price.movePointLeft(2).multiply(discount)).setScale(2, RoundingMode.HALF_EVEN));
                     break;
                 case "N":
                     break;
@@ -185,63 +189,50 @@ public class ConsoleUI {
         Long id = Long.parseLong(scanner.nextLine());
         Product foundedProduct = ValidationService.getService().findById(id);
         printInfo(foundedProduct);
-        if (foundedProduct.getPrice().compareTo(new BigDecimal(20.00)) < 0) {
-            System.out.println("To set Discount on product, Product price must be more than 20.00 Euro");
-            System.out.println("Select product field to edit: " +
-                    "\n1. Name" +
-                    "\n2. Product price" +
-                    "\n3. Product description");
-            Integer caseNum = Integer.parseInt(scanner.nextLine());
-            switch (caseNum) {
-                case 1:
-                    System.out.println("Enter product name: ");
-                    String inputName = scanner.nextLine();
-                    foundedProduct.setName(inputName);
+        System.out.println("Select product field to edit: " +
+                "\n1. Name" +
+                "\n2. Product price" +
+                "\n3. Product description" +
+                "\n4. Product discount");
+        Integer caseNum = Integer.parseInt(scanner.nextLine());
+        switch (caseNum) {
+            case 1:
+                System.out.println("Enter product name: ");
+                String inputName = scanner.nextLine();
+                foundedProduct.setName(inputName.substring(0, 1).toUpperCase() + inputName.substring(1).toLowerCase());
+                break;
+            case 2:
+                System.out.println("Enter product price: ");
+                BigDecimal inputPrice = new BigDecimal(scanner.nextLine());
+                if (inputPrice.compareTo(new BigDecimal(20.00)) < 0) {
+                    foundedProduct.setPrice(inputPrice.setScale(2, RoundingMode.HALF_EVEN));
+                    foundedProduct.setDiscount(BigDecimal.ZERO);
+                    foundedProduct.setActualPrice(BigDecimal.ZERO);
+                    System.out.println("To set Discount on product, Product price must be more than 20.00 Euro");
                     break;
-                case 2:
-                    System.out.println("Enter product price: ");
-                    BigDecimal inputPrice = new BigDecimal(scanner.nextLine());
-                    foundedProduct.setPrice(inputPrice);
+                } else {
+                    foundedProduct.setPrice(inputPrice.setScale(2, RoundingMode.HALF_EVEN));
                     break;
-                case 3:
-                    System.out.println("Enter product description: ");
-                    String inputDescription = scanner.nextLine();
-                    foundedProduct.setDescription(inputDescription);
+                }
+            case 3:
+                System.out.println("Enter product description: ");
+                String inputDescription = scanner.nextLine();
+                foundedProduct.setDescription(inputDescription);
+                break;
+            case 4:
+                if (foundedProduct.getPrice().compareTo(new BigDecimal(20.00)) < 0) {
+                    System.out.println("To set Discount on product, Product price must be more than 20.00 Euro");
                     break;
-                default:
-                    break;
-            }
-        } else {
-            System.out.println("Select product field to edit: " +
-                    "\n1. Name" +
-                    "\n2. Product price" +
-                    "\n3. Product description" +
-                    "\n4. Product discount");
-            Integer caseNum = Integer.parseInt(scanner.nextLine());
-            switch (caseNum) {
-                case 1:
-                    System.out.println("Enter product name: ");
-                    String inputName = scanner.nextLine();
-                    foundedProduct.setName(inputName);
-                    break;
-                case 2:
-                    System.out.println("Enter product price: ");
-                    BigDecimal inputPrice = new BigDecimal(scanner.nextLine());
-                    foundedProduct.setPrice(inputPrice);
-                    break;
-                case 3:
-                    System.out.println("Enter product description: ");
-                    String inputDescription = scanner.nextLine();
-                    foundedProduct.setDescription(inputDescription);
-                    break;
-                case 4:
+                } else {
                     System.out.println("Enter product discount: ");
                     BigDecimal inputDiscount = new BigDecimal(scanner.nextLine());
-                    foundedProduct.setDiscount(inputDiscount);
+                    foundedProduct.setDiscount(inputDiscount.setScale(1, RoundingMode.HALF_EVEN));
+                    foundedProduct.setActualPrice(foundedProduct.getPrice()
+                            .subtract(foundedProduct.getPrice().movePointLeft(2).multiply(inputDiscount)).setScale(2, RoundingMode.HALF_EVEN));
                     break;
-                default:
-                    break;
-            }
+                }
+            default:
+                break;
         }
         printInfo(ValidationService.getService().changeParameters(id, foundedProduct));
     }
