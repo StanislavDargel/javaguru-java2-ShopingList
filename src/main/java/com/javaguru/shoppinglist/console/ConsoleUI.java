@@ -1,40 +1,37 @@
 package com.javaguru.shoppinglist.console;
 
-import com.javaguru.shoppinglist.console.actions.ConsoleUIMenu;
-import com.javaguru.shoppinglist.service.ValidationService;
+import com.javaguru.shoppinglist.console.actions.ActionMenu;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
-    private final ValidationService service;
-    private final ConsoleUIMenu menu;
+    private final List<ActionMenu> actions;
 
-    public ConsoleUI(ValidationService service, ConsoleUIMenu menu) {
-        this.service = service;
-        this.menu = menu;
+    public ConsoleUI(List<ActionMenu> actions) {
+        this.actions = actions;
     }
 
     public void execute() {
         while (true) {
             Scanner scanner = new Scanner(System.in);
             try {
-                System.out.print("\n1. Create product" +
-                        "\n2. Find product by id" +
-                        "\n3. Edit product" +
-                        "\n4. Remove product" +
-                        "\n5. Exit" +
-                        "\nSelect menu: ");
+                System.out.println("Select menu: ");
+                for (ActionMenu menu : actions) {
+                    System.out.println(actions.indexOf(menu) + ". " + menu.getClass().getSimpleName());
+                }
+                System.out.println(actions.size() + ". Exit");
                 Integer inputNum = Integer.parseInt(scanner.nextLine());
-                if (inputNum < 1 || inputNum > 5) {
+                if (inputNum < 0 || inputNum > actions.size()) {
                     System.out.println("Menu with number " + inputNum + " doesn't exist");
-                } else if (inputNum.equals(5)) {
+                } else if (inputNum.equals(actions.size())) {
                     scanner.close();
                     System.exit(0);
                 } else {
-                    menu.executeAction(inputNum);
+                    actions.get(inputNum).action();
                 }
             } catch (Exception e) {
-                System.out.println("\nError! Please try again.");
+                System.out.println("Error! Please try again.");
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }

@@ -13,13 +13,11 @@ public class FindProductById implements ActionMenu {
     }
 
     @Override
-    public void action(Integer actionNum) {
-        if (actionNum.equals(2)) {
-            System.out.print("\nProduct search menu. Enter product id: ");
+    public void action() {
+            System.out.println("Product search menu. Enter product id: ");
             Scanner scanner = new Scanner(System.in);
             Long inputNum = scanner.nextLong();
             ProductDTO foundedProduct = service.findById(inputNum);
             service.printProductInfo(foundedProduct);
-        }
     }
 }

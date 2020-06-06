@@ -13,13 +13,11 @@ public class RemoveProduct implements ActionMenu {
     }
 
     @Override
-    public void action(Integer actionNum) {
-        if (actionNum.equals(4)) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("\nProduct delete menu. Enter product id: ");
-            Long inputID = Long.parseLong(scanner.nextLine());
-            ProductDTO removableProduct = service.removeProduct(inputID);
-            System.out.println(removableProduct + "\nWas successfully deleted");
-        }
+    public void action() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Product delete menu. Enter product id: ");
+        Long inputID = Long.parseLong(scanner.nextLine());
+        ProductDTO removableProduct = service.removeProduct(inputID);
+        System.out.println("Product " + removableProduct.getName() + "Was successfully deleted");
     }
 }

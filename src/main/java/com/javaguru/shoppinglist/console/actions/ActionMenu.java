@@ -1,9 +1,9 @@
 package com.javaguru.shoppinglist.console.actions;
 
 public interface ActionMenu {
-    void action(Integer actionNum);
+    void action();
 
-    default boolean isAgreement(String answer) {
+    default boolean isAgree(String answer) {
         return (answer.equalsIgnoreCase("y"));
     }
 }

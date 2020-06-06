@@ -44,7 +44,6 @@ public class ValidationService {
     }
 
     public ProductDTO changeParameters(Long id, ProductDTO productDTO) {
-        productValidationService.validateProduct(productDTO);
         ProductEntity entity = beanMapper.toProductEntity(productDTO);
         ProductEntity changedProduct = repository.changeProductParameters(id, entity)
                 .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
@@ -55,7 +54,7 @@ public class ValidationService {
     private ProductDTO dataNormalizer(ProductDTO productDTO) {
         productDTO.setName(productDTO.getName().substring(0, 1).toUpperCase() + productDTO.getName().substring(1).toLowerCase());
         productDTO.setPrice(productDTO.getPrice().setScale(2, RoundingMode.HALF_EVEN));
-        if (productDTO.getPrice().compareTo(new BigDecimal(20.00)) >= 0 && productDTO.getDiscount() != null) {
+        if (productDTO.getPrice().compareTo(new BigDecimal("20.00")) >= 0 && productDTO.getDiscount() != null) {
             productDTO.setDiscount(productDTO.getDiscount().setScale(1, RoundingMode.FLOOR));
             productDTO.setActualPrice(productDTO.getPrice().subtract(productDTO.getPrice().movePointLeft(2).multiply(productDTO.getDiscount())).setScale(2, RoundingMode.HALF_EVEN));
         } else {
@@ -65,14 +64,14 @@ public class ValidationService {
     }
 
     public void printProductInfo(ProductDTO productDTO) {
-        System.out.println(String.format("\nName: %s\nID: %s\nPrice: %s\nCategory: %s",
-                productDTO.getName(), productDTO.getId(), productDTO.getPrice(), productDTO.getCategory()));
+        System.out.printf("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%n",
+                productDTO.getName(), productDTO.getId(), productDTO.getPrice(), productDTO.getCategory());
         if (productDTO.getDescription() != null && !productDTO.getDescription().isEmpty()) {
-            System.out.println(String.format("Description: %s", productDTO.getDescription()));
+            System.out.printf("Description: %s%n", productDTO.getDescription());
         }
         if (productDTO.getDiscount() != null && productDTO.getDiscount().compareTo(BigDecimal.ZERO) > 0) {
-            System.out.println(String.format("Discount: %s %% \nActual Price: %s",
-                    productDTO.getDiscount(), productDTO.getActualPrice()));
+            System.out.printf("Discount: %.1f %% \nActual Price: %.2f%n",
+                    productDTO.getDiscount(), productDTO.getActualPrice());
         }
     }
 }

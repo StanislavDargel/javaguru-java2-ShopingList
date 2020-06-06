@@ -30,8 +30,7 @@ class ShoppingListApplication {
         actions.add(new FindProductById(service));
         actions.add(new EditParameters(service));
         actions.add(new RemoveProduct(service));
-        ConsoleUIMenu menu = new ConsoleUIMenu(actions);
-        ConsoleUI consoleUI = new ConsoleUI(service, menu);
+        ConsoleUI consoleUI = new ConsoleUI(actions);
         consoleUI.execute();
     }
 }
