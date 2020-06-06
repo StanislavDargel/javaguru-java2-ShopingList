@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.doNothing;
@@ -107,7 +108,7 @@ public class ValidationServiceTest {
 
     @Test   // Product with standard parameters
     public void shouldFindProductOneById() {
-        when(repository.findProductById(1L)).thenReturn(createEntityOneOut());
+        when(repository.findProductById(1L)).thenReturn(Optional.of(createEntityOneOut()));
         when(beanMapper.toProductDTO(createEntityOneOut())).thenReturn(createDTOOneOut());
         ProductDTO actual = victim.findById(1L);
         assertNotNull(actual);
@@ -116,7 +117,7 @@ public class ValidationServiceTest {
 
     @Test   // Product with Name, Id, Price, Category, Discount
     public void shouldFindProductTwoById() {
-        when(repository.findProductById(1L)).thenReturn(createEntityTwoOut());
+        when(repository.findProductById(1L)).thenReturn(Optional.of(createEntityTwoOut()));
         when(beanMapper.toProductDTO(createEntityTwoOut())).thenReturn(createDTOTwoOut());
         ProductDTO actual = victim.findById(1L);
         assertNotNull(actual);
@@ -125,7 +126,7 @@ public class ValidationServiceTest {
 
     @Test   // Product with Name, ID, Price, Discount, Description
     public void shouldFindProductThreeById() {
-        when(repository.findProductById(1L)).thenReturn(createEntityThreeOut());
+        when(repository.findProductById(1L)).thenReturn(Optional.of(createEntityThreeOut()));
         when(beanMapper.toProductDTO(createEntityThreeOut())).thenReturn(createDTOThreeOut());
         ProductDTO actual = victim.findById(1L);
         assertNotNull(actual);
@@ -134,7 +135,7 @@ public class ValidationServiceTest {
 
     @Test   // Product with Name, ID, Price, Description
     public void shouldFindProductFourById() {
-        when(repository.findProductById(1L)).thenReturn(createEntityFourOut());
+        when(repository.findProductById(1L)).thenReturn(Optional.of(createEntityFourOut()));
         when(beanMapper.toProductDTO(createEntityFourOut())).thenReturn(createDTOFourOut());
         ProductDTO actual = victim.findById(1L);
         assertNotNull(actual);
@@ -157,7 +158,7 @@ public class ValidationServiceTest {
         Long id = 1L;
         exception.expect(ProductNotFoundException.class);
         exception.expectMessage("Product with ID " + id + " doesn't exist");
-        when(repository.deleteProduct(1L)).thenReturn(createEntityOneOut());
+        when(repository.deleteProduct(1L)).thenReturn(Optional.of(createEntityOneOut()));
         when(repository.findProductById(1L)).thenReturn(null);
         when(beanMapper.toProductDTO(createEntityOneOut())).thenReturn(createDTOOneOut());
         assertEquals(createDTOOneOut(), victim.removeProduct(1L));
@@ -169,9 +170,9 @@ public class ValidationServiceTest {
     public void shouldReplaceProductWithChangedParameters() {
         doNothing().when(productValidationService).validateProduct(createDTOThreeOut());
         when(repository.changeProductParameters(1L, createEntityThreeOut()))
-                .thenReturn(createEntityThreeOut());
+                .thenReturn(Optional.of(createEntityThreeOut()));
         when(beanMapper.toProductEntity(createDTOThreeOut())).thenReturn(createEntityThreeOut());
-        when(repository.findProductById(1L)).thenReturn(createEntityThreeOut());
+        when(repository.findProductById(1L)).thenReturn(Optional.of(createEntityThreeOut()));
         when(beanMapper.toProductDTO(createEntityThreeOut())).thenReturn(createDTOThreeOut());
         ProductDTO actual = victim.changeParameters(1L, createDTOThreeOut());
         assertNotNull(actual);

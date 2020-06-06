@@ -15,9 +15,6 @@ public class ProductDTO {
     private String description;
     private BigDecimal actualPrice;
 
-    public ProductDTO() {
-    }
-
     public BigDecimal getActualPrice() {
         return actualPrice;
     }

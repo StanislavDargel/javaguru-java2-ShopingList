@@ -9,7 +9,6 @@ import com.javaguru.shoppinglist.service.validation.ProductValidationService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Objects;
 
 public class ValidationService {
     private final ProductRepository repository;
@@ -23,29 +22,34 @@ public class ValidationService {
     }
 
     public ProductDTO saveProduct(ProductDTO productDTO) {
-        this.productValidationService.validateProduct(productDTO);
-        ProductEntity entity = this.repository.save(this.beanMapper.toProductEntity(productDTO));
-        return dataNormalizer(this.beanMapper.toProductDTO(entity));
+        productValidationService.validateProduct(productDTO);
+        ProductEntity entity = beanMapper.toProductEntity(productDTO);
+        repository.save(entity);
+        ProductDTO dto = beanMapper.toProductDTO(entity);
+        return dataNormalizer(dto);
     }
 
     public ProductDTO findById(Long id) {
-        if (this.repository.findProductById(id) == null) {
-            throw new ProductNotFoundException("Product with ID " + id + " doesn't exist");
-        }
-        return dataNormalizer(this.beanMapper.toProductDTO(this.repository.findProductById(id)));
+        ProductEntity entity = repository.findProductById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
+        ProductDTO dto = beanMapper.toProductDTO(entity);
+        return dataNormalizer(dto);
     }
 
     public ProductDTO removeProduct(Long id) {
-        return dataNormalizer(this.beanMapper.toProductDTO(this.repository.deleteProduct(id)));
+        ProductEntity removableProduct = repository.deleteProduct(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
+        ProductDTO dto = beanMapper.toProductDTO(removableProduct);
+        return dataNormalizer(dto);
     }
 
     public ProductDTO changeParameters(Long id, ProductDTO productDTO) {
-        if (this.repository.findProductById(id) == null) {
-            throw new ProductNotFoundException("Product with ID " + id + " doesn't exist");
-        }
-        this.productValidationService.validateProduct(productDTO);
-        return dataNormalizer(this.beanMapper.toProductDTO(
-                this.repository.changeProductParameters(id, this.beanMapper.toProductEntity(productDTO))));
+        productValidationService.validateProduct(productDTO);
+        ProductEntity entity = beanMapper.toProductEntity(productDTO);
+        ProductEntity changedProduct = repository.changeProductParameters(id, entity)
+                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
+        ProductDTO dto = beanMapper.toProductDTO(changedProduct);
+        return dataNormalizer(dto);
     }
 
     private ProductDTO dataNormalizer(ProductDTO productDTO) {
@@ -70,29 +74,5 @@ public class ValidationService {
             System.out.println(String.format("Discount: %s %% \nActual Price: %s",
                     productDTO.getDiscount(), productDTO.getActualPrice()));
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ValidationService)) return false;
-        ValidationService that = (ValidationService) o;
-        return Objects.equals(repository, that.repository) &&
-                Objects.equals(productValidationService, that.productValidationService) &&
-                Objects.equals(beanMapper, that.beanMapper);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(repository, productValidationService, beanMapper);
-    }
-
-    @Override
-    public String toString() {
-        return "ValidationService{" +
-                "repository=" + repository +
-                ", productValidationService=" + productValidationService +
-                ", beanMapper=" + beanMapper +
-                '}';
     }
 }

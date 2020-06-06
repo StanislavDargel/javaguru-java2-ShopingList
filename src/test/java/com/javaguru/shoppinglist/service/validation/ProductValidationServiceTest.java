@@ -7,11 +7,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 public class ProductValidationServiceTest {
     private ProductDTO productDTO = new ProductDTO();
-    private ProductValidationService victim = new ProductValidationService();
+    private List<ProductValidationRule> validationRules;
+    private ProductValidationService victim = new ProductValidationService(validationRules);
 
     @Rule
     public ExpectedException exception = ExpectedException.none();

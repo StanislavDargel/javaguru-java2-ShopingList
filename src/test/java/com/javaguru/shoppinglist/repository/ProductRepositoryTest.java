@@ -2,6 +2,7 @@ package com.javaguru.shoppinglist.repository;
 
 import com.javaguru.shoppinglist.domain.ProductCategory;
 import com.javaguru.shoppinglist.domain.ProductEntity;
+import com.javaguru.shoppinglist.service.validation.ProductNotFoundException;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -41,9 +42,11 @@ public class ProductRepositoryTest {
 
     @Test
     public void shouldReturnProductThanProductFoundByID() {
+        Long id = 1L;
         victim.save(testProductOne());
         victim.save(testProductTwo());
-        ProductEntity actual = victim.findProductById(1L);
+        ProductEntity actual = victim.findProductById(1L)
+                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
 
         assertNotNull(actual);
         assertEquals(testResultProductTwo(), actual);
@@ -51,18 +54,22 @@ public class ProductRepositoryTest {
 
     @Test
     public void shouldReturnNullThanProductNotFoundByID() {
+        Long id = 2L;
         victim.save(testProductOne());
         victim.save(testProductTwo());
-        ProductEntity actual = victim.findProductById(2L);
+        ProductEntity actual = victim.findProductById(2L)
+                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
 
         assertNull(actual);
     }
 
     @Test
     public void shouldDeleteProductByID() {
+        Long id = 0L;
         victim.save(testProductOne());
         victim.save(testProductTwo());
-        ProductEntity actual = victim.deleteProduct(0L);
+        ProductEntity actual = victim.deleteProduct(0L)
+                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
         assertNull(victim.findProductById(0L));
         assertNotNull(actual);
         assertEquals(removableProduct(), actual);
@@ -70,16 +77,20 @@ public class ProductRepositoryTest {
 
     @Test
     public void shouldReplaceProductWithChangedParameters() {
+        Long id = 0L;
         victim.save(testProductOne());
-        ProductEntity actual = victim.changeProductParameters(0L, testResultProductThree());
+        ProductEntity actual = victim.changeProductParameters(0L, testResultProductThree())
+                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
         assertNotNull(actual);
         assertEquals(testResultProductThree(), actual);
     }
 
     @Test
     public void shouldDoNothingIfProductNotFoundByIdForChangingParameters() {
+        Long id = 1L;
         victim.save(testProductTwo());
-        ProductEntity actual = victim.changeProductParameters(1L, testResultProductOne());
+        ProductEntity actual = victim.changeProductParameters(1L, testResultProductOne())
+                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
         assertNull(actual);
     }
 
