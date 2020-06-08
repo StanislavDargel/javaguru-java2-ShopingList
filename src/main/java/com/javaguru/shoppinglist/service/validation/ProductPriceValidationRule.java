@@ -9,7 +9,7 @@ public class ProductPriceValidationRule implements ProductValidationRule {
     public void validate(ProductDTO productDTO) {
         productNotNull(productDTO);
         if (productDTO.getPrice() == null || productDTO.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new ProductValidationExceptions("Product price is Incorrect, price must be more than ZERO");
+            throw new ProductValidationExceptions(ValidationExceptionMessages.PRICE_VALIDATION_MESSAGE);
         }
     }
 }

@@ -1,161 +1,80 @@
 package com.javaguru.shoppinglist.service.validation;
 
-import com.javaguru.shoppinglist.domain.ProductCategory;
+import com.javaguru.shoppinglist.constantparameters.TestProductData;
 import com.javaguru.shoppinglist.dto.ProductDTO;
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+
+@RunWith(MockitoJUnitRunner.class)
 public class ProductValidationServiceTest {
-    private ProductDTO productDTO = new ProductDTO();
-    private List<ProductValidationRule> validationRules;
-    private ProductValidationService victim = new ProductValidationService(validationRules);
+    @Mock
+    private ProductCategoryValidationRule productCategoryValidationRule;
+    @Mock
+    private ProductDescriptionValidationRule productDescriptionValidationRule;
+    @Mock
+    private ProductDiscountValidationRule productDiscountValidationRule;
+    @Mock
+    private ProductNameValidationRule productNameValidationRule;
+    @Mock
+    private ProductPriceValidationRule productPriceValidationRule;
+    @Mock
+    private ProductUniqueValidationRule productUniqueValidationRule;
 
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
+    @Captor
+    private ArgumentCaptor<ProductDTO> captor;
+    private ProductValidationService victim;
+    private final ProductDTO DTO = dto();
 
-    @Test
-    public void shouldThrowExceptionWhenProductNull() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product must be not null");
+    @Before
+    public void setUo() {
+        Set<ProductValidationRule> rules = new HashSet<>();
+        rules.add(productCategoryValidationRule);
+        rules.add(productDescriptionValidationRule);
+        rules.add(productDiscountValidationRule);
+        rules.add(productNameValidationRule);
+        rules.add(productPriceValidationRule);
+        rules.add(productUniqueValidationRule);
 
-        victim.validateProduct(null);
+        victim = new ProductValidationService(rules);
     }
 
     @Test
-    public void shouldThrowExceptionWhenProductNameNull() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product name must be not empty");
+    public void shouldValidate() {
+        victim.validateProduct(DTO);
 
-        victim.validateProduct(new ProductDTO());
+        verify(productCategoryValidationRule).validate(captor.capture());
+        verify(productDescriptionValidationRule).validate(captor.capture());
+        verify(productDiscountValidationRule).validate(captor.capture());
+        verify(productNameValidationRule).validate(captor.capture());
+        verify(productPriceValidationRule).validate(captor.capture());
+        verify(productUniqueValidationRule).validate(captor.capture());
+
+        List<ProductDTO> resultList = captor.getAllValues();
+        assertThat(resultList).containsOnly(DTO);
     }
 
-    @Test
-    public void shouldThrowExceptionWhenProductNameEmpty() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product name must be not empty");
-
-        productDTO.setName("");
-        victim.validateProduct(productDTO);
+    private ProductDTO dto() {
+        ProductDTO dto = new ProductDTO();
+        dto.setId(TestProductData.ID_ZERO);
+        dto.setCategory(TestProductData.CATEGORY);
+        dto.setName(TestProductData.NAME);
+        dto.setDescription(TestProductData.DESCRIPTION);
+        dto.setPrice(TestProductData.PRICE);
+        dto.setDiscount(TestProductData.DISCOUNT);
+        dto.setActualPrice(TestProductData.ACTUAL_PRICE);
+        return dto;
     }
 
-    @Test
-    public void shouldThrowExceptionThenProductNameLengthLessThan3() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product name length is incorrect (3 - 32 letters)");
-
-        productDTO.setName("12");
-        victim.validateProduct(productDTO);
-    }
-
-    @Test
-    public void shouldThrowExceptionThenProductNameLengthMoreThan32() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product name length is incorrect (3 - 32 letters)");
-
-        productDTO.setName("Test Test Test Test Test Test 321");
-        victim.validateProduct(productDTO);
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenProductPriceIsNull() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product price is Incorrect, price must be more than ZERO");
-
-        productDTO.setName("Test");
-        productDTO.setPrice(null);
-        victim.validateProduct(productDTO);
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenProductPriceLessThanZero() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product price is Incorrect, price must be more than ZERO");
-
-        productDTO.setName("Test");
-        productDTO.setPrice(new BigDecimal(-0.01));
-        victim.validateProduct(productDTO);
-    }
-
-    @Test
-    public void shouldThrowExceptionThanProductHaveProductCategoryNull() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product category must be not null");
-        productDTO.setName("Test");
-        productDTO.setPrice(BigDecimal.TEN);
-        victim.validateProduct(productDTO);
-    }
-
-    @Test
-    public void shouldThrowExceptionThanProductDiscountIs100Percent() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product discount is Incorrect, (Correct bounds (0 ~ 100.0))");
-        productDTO.setName("Test");
-        productDTO.setPrice(BigDecimal.ONE);
-        productDTO.setCategory(ProductCategory.FRUIT);
-        productDTO.setDiscount(new BigDecimal(100));
-        victim.validateProduct(productDTO);
-    }
-
-    @Test
-    public void shouldThrowExceptionThanProductDiscountMoreThanOne() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product discount is Incorrect, (Correct bounds (0 ~ 100.0))");
-        productDTO.setName("TesT");
-        productDTO.setPrice(BigDecimal.ONE);
-        productDTO.setCategory(ProductCategory.FRUIT);
-        productDTO.setDiscount(new BigDecimal(100.01));
-        victim.validateProduct(productDTO);
-    }
-
-    @Test
-    public void shouldThrowExceptionThanProductDiscountLessThanZero() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product discount is Incorrect, (Correct bounds (0 ~ 100.0))");
-        productDTO.setName("TesT");
-        productDTO.setPrice(BigDecimal.ONE);
-        productDTO.setCategory(ProductCategory.FRUIT);
-        productDTO.setDiscount(new BigDecimal(-0.01));
-        victim.validateProduct(productDTO);
-    }
-
-    @Test
-    public void shouldThrowExceptionThanProductDescriptionIsEmpty() {
-        exception.expect(ProductValidationExceptions.class);
-        exception.expectMessage("Product description must be not empty");
-        productDTO.setName("TesT");
-        productDTO.setPrice(BigDecimal.TEN);
-        productDTO.setCategory(ProductCategory.FRUIT);
-        productDTO.setDiscount(new BigDecimal(0.254));
-        productDTO.setDescription("");
-        victim.validateProduct(productDTO);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ProductValidationServiceTest)) return false;
-        ProductValidationServiceTest that = (ProductValidationServiceTest) o;
-        return Objects.equals(productDTO, that.productDTO) &&
-                Objects.equals(victim, that.victim) &&
-                Objects.equals(exception, that.exception);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(productDTO, victim, exception);
-    }
-
-    @Override
-    public String toString() {
-        return "ProductValidationServiceTest{" +
-                "productDTO=" + productDTO +
-                ", victim=" + victim +
-                ", exception=" + exception +
-                '}';
-    }
 }

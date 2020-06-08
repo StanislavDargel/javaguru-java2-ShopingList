@@ -9,14 +9,16 @@ import com.javaguru.shoppinglist.service.ValidationService;
 import com.javaguru.shoppinglist.service.validation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 class ShoppingListApplication {
 
     public static void main(String[] args) {
         ProductRepository repository = new ProductRepositoryImpl();
         BeanMapper beanMapper = new BeanMapper();
-        List<ProductValidationRule> validationRules = new ArrayList<>();
+        Set<ProductValidationRule> validationRules = new HashSet<>();
         validationRules.add(new ProductNameValidationRule());
         validationRules.add(new ProductPriceValidationRule());
         validationRules.add(new ProductCategoryValidationRule());

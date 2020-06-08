@@ -12,8 +12,9 @@ public class ProductUniqueValidationRule implements ProductValidationRule {
 
     @Override
     public void validate(ProductDTO productDTO) {
+        productNotNull(productDTO);
         if (repository.findProductByName(productDTO.getName()).isPresent()) {
-            throw new ProductValidationExceptions("Product name must be unique");
+            throw new ProductValidationExceptions(ValidationExceptionMessages.UNIQUE_NAME_VALIDATION_MESSAGE);
         }
     }
 }

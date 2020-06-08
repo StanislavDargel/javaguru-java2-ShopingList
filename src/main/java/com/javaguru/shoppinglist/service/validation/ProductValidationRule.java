@@ -7,7 +7,7 @@ public interface ProductValidationRule {
 
     default void productNotNull(ProductDTO productDTO) {
         if (productDTO == null) {
-            throw new ProductValidationExceptions("Product must be not null");
+            throw new ProductValidationExceptions(ValidationExceptionMessages.PRODUCT_VALIDATION_MESSAGE);
         }
     }
 }

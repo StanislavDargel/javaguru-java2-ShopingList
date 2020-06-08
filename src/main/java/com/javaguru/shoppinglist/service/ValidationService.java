@@ -6,6 +6,7 @@ import com.javaguru.shoppinglist.mapper.BeanMapper;
 import com.javaguru.shoppinglist.repository.ProductRepository;
 import com.javaguru.shoppinglist.service.validation.ProductNotFoundException;
 import com.javaguru.shoppinglist.service.validation.ProductValidationService;
+import com.javaguru.shoppinglist.service.validation.ValidationExceptionMessages;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,14 +32,14 @@ public class ValidationService {
 
     public ProductDTO findById(Long id) {
         ProductEntity entity = repository.findProductById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
+                .orElseThrow(() -> new ProductNotFoundException(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE));
         ProductDTO dto = beanMapper.toProductDTO(entity);
         return dataNormalizer(dto);
     }
 
     public ProductDTO removeProduct(Long id) {
         ProductEntity removableProduct = repository.deleteProduct(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
+                .orElseThrow(() -> new ProductNotFoundException(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE));
         ProductDTO dto = beanMapper.toProductDTO(removableProduct);
         return dataNormalizer(dto);
     }
@@ -46,7 +47,7 @@ public class ValidationService {
     public ProductDTO changeParameters(Long id, ProductDTO productDTO) {
         ProductEntity entity = beanMapper.toProductEntity(productDTO);
         ProductEntity changedProduct = repository.changeProductParameters(id, entity)
-                .orElseThrow(() -> new ProductNotFoundException("Product with ID " + id + " doesn't exist"));
+                .orElseThrow(() -> new ProductNotFoundException(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE));
         ProductDTO dto = beanMapper.toProductDTO(changedProduct);
         return dataNormalizer(dto);
     }

@@ -4,14 +4,17 @@ import com.javaguru.shoppinglist.domain.ProductCategory;
 import com.javaguru.shoppinglist.domain.ProductEntity;
 import com.javaguru.shoppinglist.service.validation.ProductNotFoundException;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 import static org.junit.Assert.*;
-
+@RunWith(MockitoJUnitRunner.class)
 public class ProductRepositoryTest {
-    private final ProductRepository victim = new ProductRepositoryImpl();
+    private ProductRepository victim = new ProductRepositoryImpl();
 
     @Test
     public void shouldSaveFirstProductInRepositoryAndChangeIDToZERO() {

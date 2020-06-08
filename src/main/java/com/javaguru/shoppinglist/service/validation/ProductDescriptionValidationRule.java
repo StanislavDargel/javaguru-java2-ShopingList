@@ -8,7 +8,7 @@ public class ProductDescriptionValidationRule implements ProductValidationRule {
         productNotNull(productDTO);
         if (productDTO.getDescription() != null) {
             if (productDTO.getDescription().isEmpty()) {
-                throw new ProductValidationExceptions("Product description must be not empty");
+                throw new ProductValidationExceptions(ValidationExceptionMessages.DESCRIPTION_VALIDATION_MESSAGE);
             }
         }
     }

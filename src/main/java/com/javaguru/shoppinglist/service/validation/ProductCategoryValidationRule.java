@@ -8,7 +8,7 @@ public class ProductCategoryValidationRule implements ProductValidationRule {
     public void validate(ProductDTO productDTO) {
         productNotNull(productDTO);
         if (productDTO.getCategory() == null) {
-            throw new ProductValidationExceptions("Product category must be not null");
+            throw new ProductValidationExceptions(ValidationExceptionMessages.CATEGORY_VALIDATION_MESSAGE);
         }
     }
 }
