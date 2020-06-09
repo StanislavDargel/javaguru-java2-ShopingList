@@ -1,12 +1,13 @@
 package com.javaguru.shoppinglist.service.validation;
 
-import com.javaguru.shoppinglist.constantparameters.TestProductData;
+import com.javaguru.shoppinglist.testproductparameters.TestProductData;
 import com.javaguru.shoppinglist.dto.ProductDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
@@ -16,7 +17,6 @@ public class ProductDiscountValidationRuleTest {
     private final ProductDTO DTO = new ProductDTO();
 
     @Spy
-    @InjectMocks
     private ProductDiscountValidationRule victim;
 
     @Test
@@ -48,7 +48,7 @@ public class ProductDiscountValidationRuleTest {
 
     @Test
     public void shouldDoNotThrowExceptionThanDiscountZERO() {
-        DTO.setDiscount(TestProductData.DISCOUNT_ZERO);
+        DTO.setDiscount(BigDecimal.ZERO);
         victim.validate(DTO);
         verify(victim).productNotNull(DTO);
     }

@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductValidationRuleTest {
+
     @Spy
     private ProductValidationRule victim;
 

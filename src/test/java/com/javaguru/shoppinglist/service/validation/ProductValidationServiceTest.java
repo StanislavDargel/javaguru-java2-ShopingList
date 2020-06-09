@@ -1,6 +1,6 @@
 package com.javaguru.shoppinglist.service.validation;
 
-import com.javaguru.shoppinglist.constantparameters.TestProductData;
+import com.javaguru.shoppinglist.testproductparameters.TestProductData;
 import com.javaguru.shoppinglist.dto.ProductDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +10,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -67,12 +68,12 @@ public class ProductValidationServiceTest {
 
     private ProductDTO dto() {
         ProductDTO dto = new ProductDTO();
-        dto.setId(TestProductData.ID_ZERO);
+        dto.setId(0L);
         dto.setCategory(TestProductData.CATEGORY);
         dto.setName(TestProductData.NAME);
         dto.setDescription(TestProductData.DESCRIPTION);
         dto.setPrice(TestProductData.PRICE);
-        dto.setDiscount(TestProductData.DISCOUNT);
+        dto.setDiscount(BigDecimal.TEN);
         dto.setActualPrice(TestProductData.ACTUAL_PRICE);
         return dto;
     }

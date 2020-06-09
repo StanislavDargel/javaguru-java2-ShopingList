@@ -1,6 +1,6 @@
 package com.javaguru.shoppinglist.service.validation;
 
-import com.javaguru.shoppinglist.constantparameters.TestProductData;
+import com.javaguru.shoppinglist.testproductparameters.TestProductData;
 import com.javaguru.shoppinglist.domain.ProductEntity;
 import com.javaguru.shoppinglist.dto.ProductDTO;
 import com.javaguru.shoppinglist.repository.ProductRepository;
@@ -13,7 +13,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Optional;
 
-import static javax.print.attribute.standard.MediaSizeName.D;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

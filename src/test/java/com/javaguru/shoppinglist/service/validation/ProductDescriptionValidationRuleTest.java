@@ -1,10 +1,9 @@
 package com.javaguru.shoppinglist.service.validation;
 
-import com.javaguru.shoppinglist.constantparameters.TestProductData;
+import com.javaguru.shoppinglist.testproductparameters.TestProductData;
 import com.javaguru.shoppinglist.dto.ProductDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -16,7 +15,6 @@ public class ProductDescriptionValidationRuleTest {
     private final ProductDTO DTO = new ProductDTO();
 
     @Spy
-    @InjectMocks
     private ProductDescriptionValidationRule victim;
 
     @Test
