@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
@@ -33,6 +34,7 @@ public class ValidationServiceTest {
     private ProductValidationService productValidationService;
     @Mock
     private BeanMapper beanMapper;
+    @Spy
     @InjectMocks
     private ValidationService victim;
 
@@ -196,7 +198,7 @@ public class ValidationServiceTest {
 
     @Test
     public void shouldThrowExceptionWhenProductNotFoundByIdForChangingParameters() {
-        assertThatThrownBy(() -> victim.changeParameters(any(), dtoAllParameters(10L)))
+        assertThatThrownBy(() -> victim.changeParameters(10L, dtoAllParameters(10L)))
                 .isInstanceOf(ProductNotFoundException.class)
                 .hasMessage(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE);
     }

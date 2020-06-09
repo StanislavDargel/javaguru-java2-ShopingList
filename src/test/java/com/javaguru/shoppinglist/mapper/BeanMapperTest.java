@@ -16,8 +16,7 @@ import static org.junit.Assert.*;
 public class BeanMapperTest {
     private final ProductDTO DTO = new ProductDTO();
     private final ProductEntity ENTITY = new ProductEntity();
-    @Spy
-    private BeanMapper victim;
+    private BeanMapper victim = new BeanMapper();
 
     @Test
     public void shouldConvertProductEntityIntoProductDTO() {
