@@ -5,7 +5,6 @@ import com.javaguru.shoppinglist.dto.ProductDTO;
 import com.javaguru.shoppinglist.testproductparameters.TestProductData;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
@@ -14,54 +13,54 @@ import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BeanMapperTest {
-    private final ProductDTO DTO = new ProductDTO();
-    private final ProductEntity ENTITY = new ProductEntity();
+    private ProductDTO dto = new ProductDTO();
+    private ProductEntity entity = new ProductEntity();
     private BeanMapper victim = new BeanMapper();
 
     @Test
     public void shouldConvertProductEntityIntoProductDTO() {
-        ENTITY.setName(TestProductData.NAME);
-        ENTITY.setId(10L);
-        ENTITY.setPrice(TestProductData.PRICE);
-        ENTITY.setCategory(TestProductData.CATEGORY);
-        ENTITY.setDiscount(BigDecimal.TEN);
-        ENTITY.setDescription(TestProductData.DESCRIPTION);
-        ProductDTO actual = victim.toProductDTO(ENTITY);
+        entity.setName(TestProductData.NAME);
+        entity.setId(10L);
+        entity.setPrice(TestProductData.PRICE);
+        entity.setCategory(TestProductData.CATEGORY);
+        entity.setDiscount(BigDecimal.TEN);
+        entity.setDescription(TestProductData.DESCRIPTION);
+        ProductDTO actual = victim.toProductDTO(entity);
 
         assertEquals(dto(), actual);
     }
 
     @Test
     public void shouldConvertProductDTOIntoProductEntity() {
-        DTO.setName(TestProductData.NAME);
-        DTO.setId(10L);
-        DTO.setPrice(TestProductData.PRICE);
-        DTO.setCategory(TestProductData.CATEGORY);
-        DTO.setDiscount(BigDecimal.TEN);
-        DTO.setDescription(TestProductData.DESCRIPTION);
-        ProductEntity actual = victim.toProductEntity(DTO);
+        dto.setName(TestProductData.NAME);
+        dto.setId(10L);
+        dto.setPrice(TestProductData.PRICE);
+        dto.setCategory(TestProductData.CATEGORY);
+        dto.setDiscount(BigDecimal.TEN);
+        dto.setDescription(TestProductData.DESCRIPTION);
+        ProductEntity actual = victim.toProductEntity(dto);
 
         assertEquals(entity(), actual);
     }
 
     private ProductDTO dto() {
-        DTO.setName(TestProductData.NAME);
-        DTO.setId(10L);
-        DTO.setPrice(TestProductData.PRICE);
-        DTO.setCategory(TestProductData.CATEGORY);
-        DTO.setDiscount(BigDecimal.TEN);
-        DTO.setDescription(TestProductData.DESCRIPTION);
-        return DTO;
+        dto.setName(TestProductData.NAME);
+        dto.setId(10L);
+        dto.setPrice(TestProductData.PRICE);
+        dto.setCategory(TestProductData.CATEGORY);
+        dto.setDiscount(BigDecimal.TEN);
+        dto.setDescription(TestProductData.DESCRIPTION);
+        return dto;
     }
 
     private ProductEntity entity() {
-        ENTITY.setName(TestProductData.NAME);
-        ENTITY.setId(10L);
-        ENTITY.setPrice(TestProductData.PRICE);
-        ENTITY.setCategory(TestProductData.CATEGORY);
-        ENTITY.setDiscount(BigDecimal.TEN);
-        ENTITY.setDescription(TestProductData.DESCRIPTION);
-        return ENTITY;
+        entity.setName(TestProductData.NAME);
+        entity.setId(10L);
+        entity.setPrice(TestProductData.PRICE);
+        entity.setCategory(TestProductData.CATEGORY);
+        entity.setDiscount(BigDecimal.TEN);
+        entity.setDescription(TestProductData.DESCRIPTION);
+        return entity;
     }
 
 }

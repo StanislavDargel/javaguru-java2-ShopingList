@@ -1,4 +1,5 @@
 package com.javaguru.shoppinglist.repository;
+
 import com.javaguru.shoppinglist.domain.ProductEntity;
 import com.javaguru.shoppinglist.testproductparameters.TestProductData;
 import org.junit.Test;
@@ -12,7 +13,7 @@ import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductRepositoryTest {
-    private final ProductEntity ENTITY = new ProductEntity();
+    private ProductEntity entity = new ProductEntity();
     private ProductRepository victim = new ProductRepositoryImpl();
 
     @Test
@@ -68,21 +69,21 @@ public class ProductRepositoryTest {
     }
 
     private ProductEntity entityInput() {
-        ENTITY.setName(TestProductData.NAME);
-        ENTITY.setPrice(TestProductData.PRICE);
-        ENTITY.setCategory(TestProductData.CATEGORY);
-        ENTITY.setDiscount(BigDecimal.TEN);
-        ENTITY.setDescription(TestProductData.DESCRIPTION);
-        return ENTITY;
+        entity.setName(TestProductData.NAME);
+        entity.setPrice(TestProductData.PRICE);
+        entity.setCategory(TestProductData.CATEGORY);
+        entity.setDiscount(BigDecimal.TEN);
+        entity.setDescription(TestProductData.DESCRIPTION);
+        return entity;
     }
 
     private ProductEntity entityOutput() {
-        ENTITY.setName(TestProductData.NAME);
-        ENTITY.setId(0L);
-        ENTITY.setPrice(TestProductData.PRICE);
-        ENTITY.setCategory(TestProductData.CATEGORY);
-        ENTITY.setDiscount(BigDecimal.TEN);
-        ENTITY.setDescription(TestProductData.DESCRIPTION);
-        return ENTITY;
+        entity.setName(TestProductData.NAME);
+        entity.setId(0L);
+        entity.setPrice(TestProductData.PRICE);
+        entity.setCategory(TestProductData.CATEGORY);
+        entity.setDiscount(BigDecimal.TEN);
+        entity.setDescription(TestProductData.DESCRIPTION);
+        return entity;
     }
 }

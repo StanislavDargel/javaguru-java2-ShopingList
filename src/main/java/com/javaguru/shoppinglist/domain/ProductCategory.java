@@ -23,4 +23,9 @@ public enum ProductCategory {
             System.out.println(String.format("%d. %s", category.ordinal(), category));
         }
     }
+
+    @Override
+    public String toString() {
+        return categoryName;
+    }
 }

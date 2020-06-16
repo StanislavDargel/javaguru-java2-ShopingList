@@ -19,8 +19,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductUniqueValidationRuleTest {
-    private final ProductDTO DTO = new ProductDTO();
-    private final ProductEntity ENTITY = new ProductEntity();
+    private ProductDTO dto = new ProductDTO();
+    private ProductEntity entity = new ProductEntity();
 
     @Mock
     private ProductRepository repository;
@@ -31,19 +31,19 @@ public class ProductUniqueValidationRuleTest {
 
     @Test
     public void shouldThrowExceptionProductNameMustBeUnique() {
-        ENTITY.setName(TestProductData.NAME);
-        when(repository.findProductByName(TestProductData.NAME)).thenReturn(Optional.of(ENTITY));
-        DTO.setName(TestProductData.NAME);
-        assertThatThrownBy(() -> victim.validate(DTO))
+        entity.setName(TestProductData.NAME);
+        when(repository.findProductByName(TestProductData.NAME)).thenReturn(Optional.of(entity));
+        dto.setName(TestProductData.NAME);
+        assertThatThrownBy(() -> victim.validate(dto))
                 .isInstanceOf(ProductValidationExceptions.class)
                 .hasMessage(ValidationExceptionMessages.UNIQUE_NAME_VALIDATION_MESSAGE);
-        verify(victim).productNotNull(DTO);
+        verify(victim).productNotNull(dto);
     }
 
     @Test
     public void shouldDoNotThrowExceptionWhenNameIsUnique() {
-        DTO.setName(TestProductData.NAME);
-        victim.validate(DTO);
-        verify(victim).productNotNull(DTO);
+        dto.setName(TestProductData.NAME);
+        victim.validate(dto);
+        verify(victim).productNotNull(dto);
     }
 }

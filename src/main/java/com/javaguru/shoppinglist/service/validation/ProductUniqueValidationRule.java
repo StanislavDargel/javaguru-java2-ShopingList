@@ -2,7 +2,9 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.dto.ProductDTO;
 import com.javaguru.shoppinglist.repository.ProductRepository;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductUniqueValidationRule implements ProductValidationRule {
     private ProductRepository repository;
 

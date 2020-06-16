@@ -1,61 +1,36 @@
 package com.javaguru.shoppinglist.console.actions;
 
-import com.javaguru.shoppinglist.domain.ProductCategory;
+import com.javaguru.shoppinglist.console.productparameters.ProductParameters;
 import com.javaguru.shoppinglist.dto.ProductDTO;
 import com.javaguru.shoppinglist.service.ValidationService;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.Scanner;
+import java.util.List;
 
+@Component
+@Order(0)
 public class CreateProduct implements ActionMenu {
     private final ValidationService service;
+    private final List<ProductParameters> productParameters;
 
-    public CreateProduct(ValidationService service) {
+    public CreateProduct(ValidationService service, List<ProductParameters> productParameters) {
         this.service = service;
+        this.productParameters = productParameters;
     }
 
     @Override
     public void action() {
         System.out.println("Product creation menu.");
-        Scanner scanner = new Scanner(System.in);
         ProductDTO productDTO = new ProductDTO();
-
-        ProductCategory.printProductCategory();
-        System.out.println("Select product category: ");
-        int caseNum = Integer.parseInt(scanner.nextLine());
-        ProductCategory[] categories = ProductCategory.values();
-        if (caseNum < 0 || caseNum >= categories.length) {
-            throw new IllegalArgumentException("Category with number " + caseNum + " doesn't exist");
-        }
-        productDTO.setCategory(categories[caseNum]);
-
-        System.out.println("Enter product name: ");
-        String inputName = scanner.nextLine();
-        productDTO.setName(inputName);
-
-        System.out.println("Enter product price: ");
-        BigDecimal inputPrice = new BigDecimal(scanner.nextLine());
-        productDTO.setPrice(inputPrice);
-
-        if (inputPrice.compareTo(new BigDecimal("20.00")) >= 0) {
-            System.out.println("Do you want set discount for product (Y/N)?");
-            String discountAnswer = scanner.nextLine();
-            if (isAgree(discountAnswer)) {
-                System.out.println("Enter product discount: ");
-                BigDecimal discount = new BigDecimal(scanner.nextLine());
-                productDTO.setDiscount(discount);
-            }
-        }
-
-        System.out.println("Do you want set description for product (Y/N)?");
-        String descriptionAnswer = scanner.nextLine();
-        if (isAgree(descriptionAnswer)) {
-            System.out.println("Enter product description: ");
-            String description = scanner.nextLine();
-            productDTO.setDescription(description);
-        }
-
+        productParameters.forEach(param -> param.inputParameter(productDTO));
         ProductDTO savedProduct = service.saveProduct(productDTO);
-        service.printProductInfo(savedProduct);
+        String savedProductInfo = service.printProductInfo(savedProduct);
+        System.out.println(savedProductInfo);
+    }
+
+    @Override
+    public String toString() {
+        return "Create product";
     }
 }

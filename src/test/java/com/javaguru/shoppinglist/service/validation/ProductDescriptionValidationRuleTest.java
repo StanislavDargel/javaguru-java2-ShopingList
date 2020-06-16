@@ -12,24 +12,24 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductDescriptionValidationRuleTest {
-    private final ProductDTO DTO = new ProductDTO();
+    private ProductDTO dto = new ProductDTO();
 
     @Spy
     private ProductDescriptionValidationRule victim;
 
     @Test
     public void shouldThrowExceptionWhenDescriptionIsEmpty() {
-        DTO.setDescription(TestProductData.EMPTY_DESCRIPTION);
-        assertThatThrownBy(() -> victim.validate(DTO))
+        dto.setDescription(TestProductData.EMPTY_DESCRIPTION);
+        assertThatThrownBy(() -> victim.validate(dto))
                 .isInstanceOf(ProductValidationExceptions.class)
                 .hasMessage(ValidationExceptionMessages.DESCRIPTION_VALIDATION_MESSAGE);
-        verify(victim).productNotNull(DTO);
+        verify(victim).productNotNull(dto);
     }
 
     @Test
     public void shouldDoNotThrowExceptionWhenDescriptionNotEmpty() {
-        DTO.setDescription(TestProductData.DESCRIPTION);
-        victim.validate(DTO);
-        verify(victim).productNotNull(DTO);
+        dto.setDescription(TestProductData.DESCRIPTION);
+        victim.validate(dto);
+        verify(victim).productNotNull(dto);
     }
 }

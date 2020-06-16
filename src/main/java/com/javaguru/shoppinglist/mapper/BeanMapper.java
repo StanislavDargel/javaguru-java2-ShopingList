@@ -2,7 +2,9 @@ package com.javaguru.shoppinglist.mapper;
 
 import com.javaguru.shoppinglist.domain.ProductEntity;
 import com.javaguru.shoppinglist.dto.ProductDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class BeanMapper {
 
     public ProductDTO toProductDTO(ProductEntity productEntity) {

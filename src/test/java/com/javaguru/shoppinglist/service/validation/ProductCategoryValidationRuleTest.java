@@ -12,23 +12,23 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductCategoryValidationRuleTest {
-    private ProductDTO DTO = new ProductDTO();
+    private ProductDTO dto = new ProductDTO();
 
     @Spy
     private ProductCategoryValidationRule victim;
 
     @Test
     public void shouldThrowExceptionWhenProductCategoryNull() {
-        assertThatThrownBy(() -> victim.validate(DTO))
+        assertThatThrownBy(() -> victim.validate(dto))
                 .isInstanceOf(ProductValidationExceptions.class)
                 .hasMessage(ValidationExceptionMessages.CATEGORY_VALIDATION_MESSAGE);
-        verify(victim).productNotNull(DTO);
+        verify(victim).productNotNull(dto);
     }
 
     @Test
     public void shouldDoNotThrowExceptionWhenCategoryNotNull() {
-        DTO.setCategory(TestProductData.CATEGORY);
-        victim.validate(DTO);
-        verify(victim).productNotNull(DTO);
+        dto.setCategory(TestProductData.CATEGORY);
+        victim.validate(dto);
+        verify(victim).productNotNull(dto);
     }
 }

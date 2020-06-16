@@ -36,7 +36,7 @@ public class ProductValidationServiceTest {
     @Captor
     private ArgumentCaptor<ProductDTO> captor;
     private ProductValidationService victim;
-    private final ProductDTO DTO = dto();
+    private ProductDTO dto = dto();
 
     @Before
     public void setUo() {
@@ -53,7 +53,7 @@ public class ProductValidationServiceTest {
 
     @Test
     public void shouldValidate() {
-        victim.validateProduct(DTO);
+        victim.validateProduct(dto);
 
         verify(productCategoryValidationRule).validate(captor.capture());
         verify(productDescriptionValidationRule).validate(captor.capture());
@@ -63,7 +63,7 @@ public class ProductValidationServiceTest {
         verify(productUniqueValidationRule).validate(captor.capture());
 
         List<ProductDTO> resultList = captor.getAllValues();
-        assertThat(resultList).containsOnly(DTO);
+        assertThat(resultList).containsOnly(dto);
     }
 
     private ProductDTO dto() {

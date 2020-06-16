@@ -14,41 +14,41 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductPriceValidationRuleTest {
-    private final ProductDTO DTO = new ProductDTO();
+    private ProductDTO dto = new ProductDTO();
 
     @Spy
     private ProductPriceValidationRule victim;
 
     @Test
     public void shouldThrowExceptionWhenPriceNull() {
-        assertThatThrownBy(() -> victim.validate(DTO))
+        assertThatThrownBy(() -> victim.validate(dto))
                 .isInstanceOf(ProductValidationExceptions.class)
                 .hasMessage(ValidationExceptionMessages.PRICE_VALIDATION_MESSAGE);
-        verify(victim).productNotNull(DTO);
+        verify(victim).productNotNull(dto);
     }
 
     @Test
     public void shouldThrowExceptionWhenPriceLessThanZero() {
-        DTO.setPrice(TestProductData.NEGATIVE_PRICE);
-        assertThatThrownBy(() -> victim.validate(DTO))
+        dto.setPrice(TestProductData.NEGATIVE_PRICE);
+        assertThatThrownBy(() -> victim.validate(dto))
                 .isInstanceOf(ProductValidationExceptions.class)
                 .hasMessage(ValidationExceptionMessages.PRICE_VALIDATION_MESSAGE);
-        verify(victim).productNotNull(DTO);
+        verify(victim).productNotNull(dto);
     }
 
     @Test
     public void shouldThrowExceptionWhenPriceEqualsZERO() {
-        DTO.setPrice(BigDecimal.ZERO);
-        assertThatThrownBy(() -> victim.validate(DTO))
+        dto.setPrice(BigDecimal.ZERO);
+        assertThatThrownBy(() -> victim.validate(dto))
                 .isInstanceOf(ProductValidationExceptions.class)
                 .hasMessage(ValidationExceptionMessages.PRICE_VALIDATION_MESSAGE);
-        verify(victim).productNotNull(DTO);
+        verify(victim).productNotNull(dto);
     }
 
     @Test
     public void shouldDoNotThrowExceptionThanPriceMoreThanZERO() {
-        DTO.setPrice(TestProductData.PRICE);
-        victim.validate(DTO);
-        verify(victim).productNotNull(DTO);
+        dto.setPrice(TestProductData.PRICE);
+        victim.validate(dto);
+        verify(victim).productNotNull(dto);
     }
 }

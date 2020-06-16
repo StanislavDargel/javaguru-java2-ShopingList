@@ -7,10 +7,14 @@ import com.javaguru.shoppinglist.repository.ProductRepository;
 import com.javaguru.shoppinglist.service.validation.ProductNotFoundException;
 import com.javaguru.shoppinglist.service.validation.ProductValidationService;
 import com.javaguru.shoppinglist.service.validation.ValidationExceptionMessages;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import static java.lang.String.format;
+
+@Service
 public class ValidationService {
     private final ProductRepository repository;
     private final ProductValidationService productValidationService;
@@ -64,15 +68,16 @@ public class ValidationService {
         return productDTO;
     }
 
-    public void printProductInfo(ProductDTO productDTO) {
-        System.out.printf("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%n",
+    public String printProductInfo(ProductDTO productDTO) {
+        String info = format("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%n",
                 productDTO.getName(), productDTO.getId(), productDTO.getPrice(), productDTO.getCategory());
         if (productDTO.getDescription() != null && !productDTO.getDescription().isEmpty()) {
-            System.out.printf("Description: %s%n", productDTO.getDescription());
+            info += format("Description: %s%n", productDTO.getDescription());
         }
         if (productDTO.getDiscount() != null && productDTO.getDiscount().compareTo(BigDecimal.ZERO) > 0) {
-            System.out.printf("Discount: %.1f %% \nActual Price: %.2f%n",
+            info += format("Discount: %.1f %% \nActual Price: %.2f%n",
                     productDTO.getDiscount(), productDTO.getActualPrice());
         }
+        return info;
     }
 }

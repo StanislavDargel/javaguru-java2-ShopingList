@@ -1,7 +1,9 @@
 package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.dto.ProductDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductNameValidationRule implements ProductValidationRule {
     @Override
     public void validate(ProductDTO productDTO) {

@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import static java.lang.String.format;
 import static org.assertj.core.api.Java6Assertions.assertThatThrownBy;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,8 +26,8 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ValidationServiceTest {
-    private final ProductDTO DTO = new ProductDTO();
-    private final ProductEntity ENTITY = new ProductEntity();
+    private ProductDTO dto = new ProductDTO();
+    private ProductEntity entity = new ProductEntity();
 
     @Mock
     private ProductRepository repository;
@@ -40,10 +41,10 @@ public class ValidationServiceTest {
 
     @Test
     public void shouldSaveProductWithCategoryNamePrice() {
-        when(repository.save(any())).thenReturn(ENTITY);
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoStandard(20L));
-        when(beanMapper.toProductEntity(any())).thenReturn(ENTITY);
-        ProductDTO actual = victim.saveProduct(DTO);
+        when(repository.save(any())).thenReturn(entity);
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoStandard(20L));
+        when(beanMapper.toProductEntity(any())).thenReturn(entity);
+        ProductDTO actual = victim.saveProduct(dto);
 
         verify(productValidationService).validateProduct(any());
         assertEquals(dtoStandard(20L), actual);
@@ -51,10 +52,10 @@ public class ValidationServiceTest {
 
     @Test
     public void shouldSaveProductWithCategoryNameDiscountPriceEquals20() {
-        when(repository.save(any())).thenReturn(ENTITY);
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoDiscount(120L));
-        when(beanMapper.toProductEntity(any())).thenReturn(ENTITY);
-        ProductDTO actual = victim.saveProduct(DTO);
+        when(repository.save(any())).thenReturn(entity);
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoDiscount(120L));
+        when(beanMapper.toProductEntity(any())).thenReturn(entity);
+        ProductDTO actual = victim.saveProduct(dto);
 
         verify(productValidationService).validateProduct(any());
         assertEquals(dtoDiscount(120L), actual);
@@ -64,10 +65,10 @@ public class ValidationServiceTest {
     public void shouldSaveProductWithCategoryNameDiscountPriceLessThan20() {
         ProductDTO expected = dtoStandard(120L);
         expected.setPrice(BigDecimal.TEN);
-        when(repository.save(any())).thenReturn(ENTITY);
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(expected);
-        when(beanMapper.toProductEntity(any())).thenReturn(ENTITY);
-        ProductDTO actual = victim.saveProduct(DTO);
+        when(repository.save(any())).thenReturn(entity);
+        when(beanMapper.toProductDTO(entity)).thenReturn(expected);
+        when(beanMapper.toProductEntity(any())).thenReturn(entity);
+        ProductDTO actual = victim.saveProduct(dto);
 
         verify(productValidationService).validateProduct(any());
         assertEquals(expected, actual);
@@ -75,10 +76,10 @@ public class ValidationServiceTest {
 
     @Test
     public void shouldSaveProductWithCategoryNamePriceDescription() {
-        when(repository.save(any())).thenReturn(ENTITY);
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoDescription(200L));
-        when(beanMapper.toProductEntity(any())).thenReturn(ENTITY);
-        ProductDTO actual = victim.saveProduct(DTO);
+        when(repository.save(any())).thenReturn(entity);
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoDescription(200L));
+        when(beanMapper.toProductEntity(any())).thenReturn(entity);
+        ProductDTO actual = victim.saveProduct(dto);
 
         verify(productValidationService).validateProduct(any());
         assertEquals(dtoDescription(200L), actual);
@@ -86,10 +87,10 @@ public class ValidationServiceTest {
 
     @Test
     public void shouldSaveProductWithAllParametersAndPriceMoreThan20() {
-        when(repository.save(any())).thenReturn(ENTITY);
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoAllParameters(100L));
-        when(beanMapper.toProductEntity(any())).thenReturn(ENTITY);
-        ProductDTO actual = victim.saveProduct(DTO);
+        when(repository.save(any())).thenReturn(entity);
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoAllParameters(100L));
+        when(beanMapper.toProductEntity(any())).thenReturn(entity);
+        ProductDTO actual = victim.saveProduct(dto);
 
         verify(productValidationService).validateProduct(any());
         assertEquals(dtoAllParameters(100L), actual);
@@ -99,10 +100,10 @@ public class ValidationServiceTest {
     public void shouldSaveProductWithAllParametersAndPriceLessThan20() {
         ProductDTO expected = dtoDescription(120L);
         expected.setPrice(BigDecimal.TEN);
-        when(repository.save(any())).thenReturn(ENTITY);
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(expected);
-        when(beanMapper.toProductEntity(any())).thenReturn(ENTITY);
-        ProductDTO actual = victim.saveProduct(DTO);
+        when(repository.save(any())).thenReturn(entity);
+        when(beanMapper.toProductDTO(entity)).thenReturn(expected);
+        when(beanMapper.toProductEntity(any())).thenReturn(entity);
+        ProductDTO actual = victim.saveProduct(dto);
 
         verify(productValidationService).validateProduct(any());
         assertEquals(expected, actual);
@@ -110,32 +111,32 @@ public class ValidationServiceTest {
 
     @Test
     public void shouldFindProductWithStandardParametersById() {
-        when(repository.findProductById(123L)).thenReturn(Optional.of(ENTITY));
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoStandard(123L));
+        when(repository.findProductById(123L)).thenReturn(Optional.of(entity));
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoStandard(123L));
         ProductDTO actual = victim.findById(123L);
         assertEquals(dtoStandard(123L), actual);
     }
 
     @Test   // Product with Name, Id, Price, Category, Discount
     public void shouldFindProductWithStandardAndDiscountParametersById() {
-        when(repository.findProductById(123L)).thenReturn(Optional.of(ENTITY));
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoDiscount(123L));
+        when(repository.findProductById(123L)).thenReturn(Optional.of(entity));
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoDiscount(123L));
         ProductDTO actual = victim.findById(123L);
         assertEquals(dtoDiscount(123L), actual);
     }
 
     @Test
     public void shouldFindProductWithStandardAndDescriptionParametersById() {
-        when(repository.findProductById(123L)).thenReturn(Optional.of(ENTITY));
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoDescription(123L));
+        when(repository.findProductById(123L)).thenReturn(Optional.of(entity));
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoDescription(123L));
         ProductDTO actual = victim.findById(123L);
         assertEquals(dtoDescription(123L), actual);
     }
 
     @Test   // Product with Name, ID, Price, Description
     public void shouldFindProductWithAllParametersById() {
-        when(repository.findProductById(123L)).thenReturn(Optional.of(ENTITY));
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoAllParameters(123L));
+        when(repository.findProductById(123L)).thenReturn(Optional.of(entity));
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoAllParameters(123L));
         ProductDTO actual = victim.findById(123L);
         assertEquals(dtoAllParameters(123L), actual);
     }
@@ -149,32 +150,32 @@ public class ValidationServiceTest {
 
     @Test
     public void shouldRemoveStandardProduct() {
-        when(repository.deleteProduct(123L)).thenReturn(Optional.of(ENTITY));
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoStandard(123L));
+        when(repository.deleteProduct(123L)).thenReturn(Optional.of(entity));
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoStandard(123L));
         ProductDTO actual = victim.removeProduct(123L);
         assertEquals(dtoStandard(123L), actual);
     }
 
     @Test
     public void shouldRemoveStandardProductWithDiscount() {
-        when(repository.deleteProduct(123L)).thenReturn(Optional.of(ENTITY));
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoDiscount(123L));
+        when(repository.deleteProduct(123L)).thenReturn(Optional.of(entity));
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoDiscount(123L));
         ProductDTO actual = victim.removeProduct(123L);
         assertEquals(dtoDiscount(123L), actual);
     }
 
     @Test
     public void shouldRemoveStandardProductWithDescription() {
-        when(repository.deleteProduct(123L)).thenReturn(Optional.of(ENTITY));
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoDescription(123L));
+        when(repository.deleteProduct(123L)).thenReturn(Optional.of(entity));
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoDescription(123L));
         ProductDTO actual = victim.removeProduct(123L);
         assertEquals(dtoDescription(123L), actual);
     }
 
     @Test
     public void shouldRemoveProductWithAllParameters() {
-        when(repository.deleteProduct(123L)).thenReturn(Optional.of(ENTITY));
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoAllParameters(123L));
+        when(repository.deleteProduct(123L)).thenReturn(Optional.of(entity));
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoAllParameters(123L));
         ProductDTO actual = victim.removeProduct(123L);
         assertEquals(dtoAllParameters(123L), actual);
     }
@@ -188,10 +189,10 @@ public class ValidationServiceTest {
 
     @Test
     public void shouldReplaceProductWithChangedParameters() {
-        when(repository.changeProductParameters(123L, ENTITY))
-                .thenReturn(Optional.of(ENTITY));
-        when(beanMapper.toProductEntity(any())).thenReturn(ENTITY);
-        when(beanMapper.toProductDTO(ENTITY)).thenReturn(dtoAllParameters(123L));
+        when(repository.changeProductParameters(123L, entity))
+                .thenReturn(Optional.of(entity));
+        when(beanMapper.toProductEntity(any())).thenReturn(entity);
+        when(beanMapper.toProductDTO(entity)).thenReturn(dtoAllParameters(123L));
         ProductDTO actual = victim.changeParameters(123L, dtoAllParameters(123L));
         assertEquals(dtoAllParameters(123L), actual);
     }
@@ -203,42 +204,69 @@ public class ValidationServiceTest {
                 .hasMessage(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE);
     }
 
+    @Test
+    public void shouldPrintProductInfoWithNameIdCategoryAndPriceParameters() {
+        String expected = format("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%n",
+                TestProductData.NAME, 0L, TestProductData.PRICE, TestProductData.CATEGORY);
+        assertEquals(expected, victim.printProductInfo(dtoStandard(0L)));
+    }
+
+    @Test
+    public void shouldPrintProductInfoWithNameIdCategoryDiscountAndPriceParameters() {
+        String expected = format("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%nDiscount: %.1f %% \nActual Price: %.2f%n",
+                TestProductData.NAME, 0L, TestProductData.PRICE, TestProductData.CATEGORY, BigDecimal.TEN, TestProductData.ACTUAL_PRICE);
+        assertEquals(expected, victim.printProductInfo(dtoDiscount(0L)));
+    }
+
+    @Test
+    public void shouldPrintProductInfoWithNameIdCategoryDescriptionAndPriceParameters() {
+        String expected = format("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%nDescription: %s%n",
+                TestProductData.NAME, 0L, TestProductData.PRICE, TestProductData.CATEGORY, TestProductData.DESCRIPTION);
+        assertEquals(expected, victim.printProductInfo(dtoDescription(0L)));
+    }
+
+    @Test
+    public void shouldPrintProductInfoWithAllParameters() {
+        String expected = format("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%nDescription: %s%nDiscount: %.1f %% \nActual Price: %.2f%n",
+                TestProductData.NAME, 0L, TestProductData.PRICE, TestProductData.CATEGORY, TestProductData.DESCRIPTION, BigDecimal.TEN, TestProductData.ACTUAL_PRICE);
+        assertEquals(expected, victim.printProductInfo(dtoAllParameters(0L)));
+    }
 
     private ProductDTO dtoStandard(Long id) {
-        DTO.setId(id);
-        DTO.setName(TestProductData.NAME);
-        DTO.setCategory(TestProductData.CATEGORY);
-        DTO.setPrice(TestProductData.PRICE);
-        return DTO;
+        dto.setId(id);
+        dto.setName(TestProductData.NAME);
+        dto.setCategory(TestProductData.CATEGORY);
+        dto.setPrice(TestProductData.PRICE);
+        return dto;
     }
 
     private ProductDTO dtoDiscount(Long id) {
-        DTO.setId(id);
-        DTO.setName(TestProductData.NAME);
-        DTO.setCategory(TestProductData.CATEGORY);
-        DTO.setPrice(TestProductData.PRICE);
-        DTO.setDiscount(BigDecimal.TEN);
-        DTO.setActualPrice(TestProductData.ACTUAL_PRICE);
-        return DTO;
+        dto.setId(id);
+        dto.setName(TestProductData.NAME);
+        dto.setCategory(TestProductData.CATEGORY);
+        dto.setPrice(TestProductData.PRICE);
+        dto.setDiscount(BigDecimal.TEN);
+        dto.setActualPrice(TestProductData.ACTUAL_PRICE);
+        return dto;
     }
 
     private ProductDTO dtoDescription(Long id) {
-        DTO.setId(id);
-        DTO.setName(TestProductData.NAME);
-        DTO.setCategory(TestProductData.CATEGORY);
-        DTO.setPrice(TestProductData.PRICE);
-        DTO.setDescription(TestProductData.DESCRIPTION);
-        return DTO;
+        dto.setId(id);
+        dto.setName(TestProductData.NAME);
+        dto.setCategory(TestProductData.CATEGORY);
+        dto.setPrice(TestProductData.PRICE);
+        dto.setDescription(TestProductData.DESCRIPTION);
+        return dto;
     }
 
     private ProductDTO dtoAllParameters(Long id) {
-        DTO.setId(id);
-        DTO.setName(TestProductData.NAME);
-        DTO.setCategory(TestProductData.CATEGORY);
-        DTO.setPrice(TestProductData.PRICE);
-        DTO.setDiscount(BigDecimal.TEN);
-        DTO.setActualPrice(TestProductData.ACTUAL_PRICE);
-        DTO.setDescription(TestProductData.DESCRIPTION);
-        return DTO;
+        dto.setId(id);
+        dto.setName(TestProductData.NAME);
+        dto.setCategory(TestProductData.CATEGORY);
+        dto.setPrice(TestProductData.PRICE);
+        dto.setDiscount(BigDecimal.TEN);
+        dto.setActualPrice(TestProductData.ACTUAL_PRICE);
+        dto.setDescription(TestProductData.DESCRIPTION);
+        return dto;
     }
 }
