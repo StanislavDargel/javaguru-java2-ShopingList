@@ -18,7 +18,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.math.BigDecimal;
 import java.util.Optional;
 
-import static java.lang.String.format;
 import static org.assertj.core.api.Java6Assertions.assertThatThrownBy;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;

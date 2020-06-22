@@ -9,11 +9,6 @@ import com.javaguru.shoppinglist.service.validation.ProductValidationService;
 import com.javaguru.shoppinglist.service.validation.ValidationExceptionMessages;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
-import static java.lang.String.format;
-
 @Service
 public class ProductService {
     private final ProductRepository repository;
@@ -30,41 +25,25 @@ public class ProductService {
         productValidationService.validateProduct(productDTO);
         ProductEntity entity = beanMapper.toProductEntity(productDTO);
         repository.save(entity);
-        ProductDTO dto = beanMapper.toProductDTO(entity);
-        return dataNormalizer(dto);
+        return beanMapper.toProductDTO(entity);
     }
 
     public ProductDTO findById(Long id) {
         ProductEntity entity = repository.findProductById(id)
                 .orElseThrow(() -> new ProductNotFoundException(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE));
-        ProductDTO dto = beanMapper.toProductDTO(entity);
-        return dataNormalizer(dto);
+        return beanMapper.toProductDTO(entity);
     }
 
     public ProductDTO removeProduct(Long id) {
         ProductEntity removableProduct = repository.deleteProduct(id)
                 .orElseThrow(() -> new ProductNotFoundException(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE));
-        ProductDTO dto = beanMapper.toProductDTO(removableProduct);
-        return dataNormalizer(dto);
+        return beanMapper.toProductDTO(removableProduct);
     }
 
     public ProductDTO changeParameters(Long id, ProductDTO productDTO) {
         ProductEntity entity = beanMapper.toProductEntity(productDTO);
         ProductEntity changedProduct = repository.changeProductParameters(id, entity)
                 .orElseThrow(() -> new ProductNotFoundException(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE));
-        ProductDTO dto = beanMapper.toProductDTO(changedProduct);
-        return dataNormalizer(dto);
-    }
-
-    private ProductDTO dataNormalizer(ProductDTO productDTO) {
-        productDTO.setName(productDTO.getName().substring(0, 1).toUpperCase() + productDTO.getName().substring(1).toLowerCase());
-        productDTO.setPrice(productDTO.getPrice().setScale(2, RoundingMode.HALF_EVEN));
-        if (productDTO.getPrice().compareTo(new BigDecimal("20.00")) >= 0 && productDTO.getDiscount() != null) {
-            productDTO.setDiscount(productDTO.getDiscount().setScale(1, RoundingMode.FLOOR));
-            productDTO.setActualPrice(productDTO.getPrice().subtract(productDTO.getPrice().movePointLeft(2).multiply(productDTO.getDiscount())).setScale(2, RoundingMode.HALF_EVEN));
-        } else {
-            productDTO.setDiscount(BigDecimal.ZERO);
-        }
-        return productDTO;
+        return beanMapper.toProductDTO(changedProduct);
     }
 }

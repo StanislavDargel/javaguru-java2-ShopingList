@@ -11,7 +11,6 @@ import static org.junit.Assert.*;
 
 public class ProductInfoTest {
     private ProductInfo victim = new ProductInfo();
-    private ProductDTO dto = new ProductDTO();
 
     @Test
     public void shouldPrintProductInfoWithNameIdCategoryAndPriceParameters() {
@@ -42,6 +41,7 @@ public class ProductInfoTest {
     }
 
     private ProductDTO dtoStandard(Long id) {
+        ProductDTO dto = new ProductDTO();
         dto.setId(id);
         dto.setName(TestProductData.NAME);
         dto.setCategory(TestProductData.CATEGORY);
@@ -50,6 +50,7 @@ public class ProductInfoTest {
     }
 
     private ProductDTO dtoDiscount(Long id) {
+        ProductDTO dto = new ProductDTO();
         dto.setId(id);
         dto.setName(TestProductData.NAME);
         dto.setCategory(TestProductData.CATEGORY);
@@ -60,6 +61,7 @@ public class ProductInfoTest {
     }
 
     private ProductDTO dtoDescription(Long id) {
+        ProductDTO dto = new ProductDTO();
         dto.setId(id);
         dto.setName(TestProductData.NAME);
         dto.setCategory(TestProductData.CATEGORY);
@@ -69,6 +71,7 @@ public class ProductInfoTest {
     }
 
     private ProductDTO dtoAllParameters(Long id) {
+        ProductDTO dto = new ProductDTO();
         dto.setId(id);
         dto.setName(TestProductData.NAME);
         dto.setCategory(TestProductData.CATEGORY);

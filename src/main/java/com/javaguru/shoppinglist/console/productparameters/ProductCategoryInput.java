@@ -15,20 +15,21 @@ public class ProductCategoryInput implements ProductParameters {
         Scanner scanner = new Scanner(System.in);
         ProductCategory.printProductCategory();
         ProductCategory[] categories = ProductCategory.values();
-        int inputNum;
-        do {
+        while (true) {
             System.out.print("Select product category: ");
             while (!scanner.hasNextInt()) {
                 System.out.println("Input doesn't match specifications. Try again and enter number from list.");
                 System.out.print("Select product category: ");
                 scanner.next();
             }
-            inputNum = scanner.nextInt();
+            int inputNum = scanner.nextInt();
             if (inputNum < 0 || inputNum >= categories.length) {
                 System.out.println("Selected product category doesn't exist.");
+            } else {
+                productDTO.setCategory(categories[inputNum]);
+                break;
             }
-        } while (inputNum < 0 || inputNum >= categories.length);
-        productDTO.setCategory(categories[inputNum]);
+        }
     }
 
     @Override
