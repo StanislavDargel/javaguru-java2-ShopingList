@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ProductValidationServiceTest {
+public class ProductProductServiceTest {
     @Mock
     private ProductCategoryValidationRule productCategoryValidationRule;
     @Mock

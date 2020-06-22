@@ -15,12 +15,12 @@ import java.math.RoundingMode;
 import static java.lang.String.format;
 
 @Service
-public class ValidationService {
+public class ProductService {
     private final ProductRepository repository;
     private final ProductValidationService productValidationService;
     private final BeanMapper beanMapper;
 
-    public ValidationService(ProductRepository productRepository, ProductValidationService productValidationService, BeanMapper beanMapper) {
+    public ProductService(ProductRepository productRepository, ProductValidationService productValidationService, BeanMapper beanMapper) {
         this.repository = productRepository;
         this.productValidationService = productValidationService;
         this.beanMapper = beanMapper;
@@ -66,18 +66,5 @@ public class ValidationService {
             productDTO.setDiscount(BigDecimal.ZERO);
         }
         return productDTO;
-    }
-
-    public String printProductInfo(ProductDTO productDTO) {
-        String info = format("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%n",
-                productDTO.getName(), productDTO.getId(), productDTO.getPrice(), productDTO.getCategory());
-        if (productDTO.getDescription() != null && !productDTO.getDescription().isEmpty()) {
-            info += format("Description: %s%n", productDTO.getDescription());
-        }
-        if (productDTO.getDiscount() != null && productDTO.getDiscount().compareTo(BigDecimal.ZERO) > 0) {
-            info += format("Discount: %.1f %% \nActual Price: %.2f%n",
-                    productDTO.getDiscount(), productDTO.getActualPrice());
-        }
-        return info;
     }
 }

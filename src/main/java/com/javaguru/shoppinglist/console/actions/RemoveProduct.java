@@ -1,7 +1,8 @@
 package com.javaguru.shoppinglist.console.actions;
 
 import com.javaguru.shoppinglist.dto.ProductDTO;
-import com.javaguru.shoppinglist.service.ValidationService;
+import com.javaguru.shoppinglist.productutils.ProductInfo;
+import com.javaguru.shoppinglist.service.ProductService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +11,12 @@ import java.util.Scanner;
 @Component
 @Order(3)
 public class RemoveProduct implements ActionMenu {
-    private final ValidationService service;
+    private final ProductService service;
+    private final ProductInfo productInfo;
 
-    public RemoveProduct(ValidationService service) {
+    public RemoveProduct(ProductService service, ProductInfo productInfo) {
         this.service = service;
+        this.productInfo = productInfo;
     }
 
     @Override
@@ -22,7 +25,7 @@ public class RemoveProduct implements ActionMenu {
         System.out.print("Product delete menu. Enter product id: ");
         Long inputNum = Long.parseLong(scanner.nextLine());
         ProductDTO foundedProduct = service.findById(inputNum);
-        String foundedProductInfo = service.printProductInfo(foundedProduct);
+        String foundedProductInfo = productInfo.print(foundedProduct);
         System.out.println(foundedProductInfo);
         System.out.print("Are you sure you want to delete this product (Y/N)?");
         String inputAnswer = scanner.nextLine();

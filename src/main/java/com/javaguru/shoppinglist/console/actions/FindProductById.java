@@ -1,7 +1,8 @@
 package com.javaguru.shoppinglist.console.actions;
 
 import com.javaguru.shoppinglist.dto.ProductDTO;
-import com.javaguru.shoppinglist.service.ValidationService;
+import com.javaguru.shoppinglist.productutils.ProductInfo;
+import com.javaguru.shoppinglist.service.ProductService;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -10,10 +11,12 @@ import java.util.Scanner;
 @Component
 @Order(2)
 public class FindProductById implements ActionMenu {
-    private final ValidationService service;
+    private final ProductService service;
+    private final ProductInfo productInfo;
 
-    public FindProductById(ValidationService service) {
+    public FindProductById(ProductService service, ProductInfo productInfo) {
         this.service = service;
+        this.productInfo = productInfo;
     }
 
     @Override
@@ -22,7 +25,7 @@ public class FindProductById implements ActionMenu {
         Scanner scanner = new Scanner(System.in);
         Long inputNum = scanner.nextLong();
         ProductDTO foundedProduct = service.findById(inputNum);
-        String foundedProductInfo = service.printProductInfo(foundedProduct);
+        String foundedProductInfo = productInfo.print(foundedProduct);
         System.out.println(foundedProductInfo);
     }
 

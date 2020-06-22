@@ -3,15 +3,12 @@ package com.javaguru.shoppinglist.repository;
 import com.javaguru.shoppinglist.domain.ProductEntity;
 import com.javaguru.shoppinglist.testproductparameters.TestProductData;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ProductRepositoryTest {
     private ProductEntity entity = new ProductEntity();
     private ProductRepository victim = new ProductRepositoryImpl();

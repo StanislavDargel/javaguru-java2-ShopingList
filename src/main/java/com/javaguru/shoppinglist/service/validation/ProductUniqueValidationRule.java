@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductUniqueValidationRule implements ProductValidationRule {
-    private ProductRepository repository;
+    private final ProductRepository repository;
 
     public ProductUniqueValidationRule(ProductRepository repository) {
         this.repository = repository;

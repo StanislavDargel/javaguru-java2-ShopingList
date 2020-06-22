@@ -8,10 +8,8 @@ public class ProductDescriptionValidationRule implements ProductValidationRule {
     @Override
     public void validate(ProductDTO productDTO) {
         productNotNull(productDTO);
-        if (productDTO.getDescription() != null) {
-            if (productDTO.getDescription().isEmpty()) {
-                throw new ProductValidationExceptions(ValidationExceptionMessages.DESCRIPTION_VALIDATION_MESSAGE);
-            }
+        if (productDTO.getDescription() != null && productDTO.getDescription().isEmpty()) {
+            throw new ProductValidationExceptions(ValidationExceptionMessages.DESCRIPTION_VALIDATION_MESSAGE);
         }
     }
 }

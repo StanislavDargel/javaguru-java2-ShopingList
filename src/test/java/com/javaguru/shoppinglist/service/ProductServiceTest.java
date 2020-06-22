@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ValidationServiceTest {
+public class ProductServiceTest {
     private ProductDTO dto = new ProductDTO();
     private ProductEntity entity = new ProductEntity();
 
@@ -37,7 +37,7 @@ public class ValidationServiceTest {
     private BeanMapper beanMapper;
     @Spy
     @InjectMocks
-    private ValidationService victim;
+    private ProductService victim;
 
     @Test
     public void shouldSaveProductWithCategoryNamePrice() {
@@ -202,34 +202,6 @@ public class ValidationServiceTest {
         assertThatThrownBy(() -> victim.changeParameters(10L, dtoAllParameters(10L)))
                 .isInstanceOf(ProductNotFoundException.class)
                 .hasMessage(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE);
-    }
-
-    @Test
-    public void shouldPrintProductInfoWithNameIdCategoryAndPriceParameters() {
-        String expected = format("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%n",
-                TestProductData.NAME, 0L, TestProductData.PRICE, TestProductData.CATEGORY);
-        assertEquals(expected, victim.printProductInfo(dtoStandard(0L)));
-    }
-
-    @Test
-    public void shouldPrintProductInfoWithNameIdCategoryDiscountAndPriceParameters() {
-        String expected = format("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%nDiscount: %.1f %% \nActual Price: %.2f%n",
-                TestProductData.NAME, 0L, TestProductData.PRICE, TestProductData.CATEGORY, BigDecimal.TEN, TestProductData.ACTUAL_PRICE);
-        assertEquals(expected, victim.printProductInfo(dtoDiscount(0L)));
-    }
-
-    @Test
-    public void shouldPrintProductInfoWithNameIdCategoryDescriptionAndPriceParameters() {
-        String expected = format("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%nDescription: %s%n",
-                TestProductData.NAME, 0L, TestProductData.PRICE, TestProductData.CATEGORY, TestProductData.DESCRIPTION);
-        assertEquals(expected, victim.printProductInfo(dtoDescription(0L)));
-    }
-
-    @Test
-    public void shouldPrintProductInfoWithAllParameters() {
-        String expected = format("\nName: %s\nID: %d\nPrice: %.2f\nCategory: %s%nDescription: %s%nDiscount: %.1f %% \nActual Price: %.2f%n",
-                TestProductData.NAME, 0L, TestProductData.PRICE, TestProductData.CATEGORY, TestProductData.DESCRIPTION, BigDecimal.TEN, TestProductData.ACTUAL_PRICE);
-        assertEquals(expected, victim.printProductInfo(dtoAllParameters(0L)));
     }
 
     private ProductDTO dtoStandard(Long id) {
