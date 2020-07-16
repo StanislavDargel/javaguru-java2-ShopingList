@@ -12,6 +12,9 @@ public class ProductEntity {
     private BigDecimal discount;
     private String description;
 
+    public ProductEntity() {
+    }
+
     public ProductCategory getCategory() {
         return category;
     }

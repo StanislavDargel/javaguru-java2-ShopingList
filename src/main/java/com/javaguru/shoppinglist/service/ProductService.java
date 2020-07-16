@@ -15,7 +15,9 @@ public class ProductService {
     private final ProductValidationService productValidationService;
     private final BeanMapper beanMapper;
 
-    public ProductService(ProductRepository productRepository, ProductValidationService productValidationService, BeanMapper beanMapper) {
+    public ProductService(ProductRepository productRepository,
+                          ProductValidationService productValidationService,
+                          BeanMapper beanMapper) {
         this.repository = productRepository;
         this.productValidationService = productValidationService;
         this.beanMapper = beanMapper;
