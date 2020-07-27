@@ -6,10 +6,10 @@ public enum ProductCategory {
     MEAT("MEAT"),
     VEGETABLE("VEGETABLE"),
     CANDY("CANDY"),
-    DAIRY_PRODUCTS("DAIRY PRODUCTS"),
+    DAIRY_PRODUCTS("DAIRY_PRODUCTS"),
     BAKERY("BAKERY"),
-    SEA_FOODS("SEA FOODS"),
-    CANNED_FOOD("CANNED FOOD"),
+    SEA_FOODS("SEA_FOODS"),
+    CANNED_FOOD("CANNED_FOOD"),
     GROAT("GROAT");
 
     private final String categoryName;

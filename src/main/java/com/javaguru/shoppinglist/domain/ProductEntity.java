@@ -1,16 +1,39 @@
 package com.javaguru.shoppinglist.domain;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Entity
+@Table(name = "product")
 public class ProductEntity {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "price")
     private BigDecimal price;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "product_category")
     private ProductCategory category;
+    @Column(name = "discount")
     private BigDecimal discount;
+    @Column(name = "description")
     private String description;
+
+    public ProductEntity() {
+    }
+
+    private ProductEntity(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.price = builder.price;
+        this.category = builder.category;
+        this.discount = builder.discount;
+        this.description = builder.description;
+    }
 
     public ProductCategory getCategory() {
         return category;
@@ -88,5 +111,61 @@ public class ProductEntity {
                 ", discount=" + discount +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public static class Builder {
+        private Long id;
+        private String name;
+        private BigDecimal price;
+        private ProductCategory category;
+        private BigDecimal discount;
+        private String description;
+
+        public Builder() {
+        }
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setPrice(BigDecimal price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder setCategory(ProductCategory category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder setDiscount(BigDecimal discount) {
+            this.discount = discount;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder of(ProductEntity productEntity) {
+            this.id = productEntity.id;
+            this.name = productEntity.name;
+            this.price = productEntity.price;
+            this.category = productEntity.category;
+            this.discount = productEntity.discount;
+            this.description = productEntity.description;
+            return this;
+        }
+
+        public ProductEntity build() {
+            return new ProductEntity(this);
+        }
     }
 }

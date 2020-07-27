@@ -11,7 +11,7 @@ public interface ProductRepository {
 
     Optional<ProductEntity> findProductByName(String name);
 
-    Optional<ProductEntity> deleteProduct(Long id);
+    void deleteProduct(Long id);
 
     Optional<ProductEntity> changeProductParameters(Long id, ProductEntity productEntity);
 

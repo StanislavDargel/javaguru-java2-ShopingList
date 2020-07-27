@@ -20,7 +20,7 @@ public class ConsoleUI {
             try {
                 System.out.println("Select menu: ");
                 for (ActionMenu menu : actions) {
-                    System.out.println(actions.indexOf(menu) + ". " + menu);
+                    System.out.println(actions.indexOf(menu) + ". " + menu.actionName());
                 }
                 while (!scanner.hasNextInt()) {
                     System.out.println("Input doesn't match specifications. Try again and enter number from menu.");

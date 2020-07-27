@@ -1,6 +1,7 @@
 package com.javaguru.shoppinglist.repository;
 
 import com.javaguru.shoppinglist.domain.ProductEntity;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
+@Profile("inmemory")
 public class ProductRepositoryImpl implements ProductRepository {
     private final Map<Long, ProductEntity> inMemoryDatabase = new HashMap<>();
     private Long productIdSequence = 0L;
@@ -36,8 +38,8 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Optional<ProductEntity> deleteProduct(Long id) {
-        return Optional.ofNullable(inMemoryDatabase.remove(id));
+    public void deleteProduct(Long id) {
+        inMemoryDatabase.remove(id);
     }
 
     @Override

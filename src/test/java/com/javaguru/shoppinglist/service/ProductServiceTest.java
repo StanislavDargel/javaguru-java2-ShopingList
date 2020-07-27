@@ -148,35 +148,13 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void shouldRemoveStandardProduct() {
-        when(repository.deleteProduct(123L)).thenReturn(Optional.of(entity));
-        when(beanMapper.toProductDTO(entity)).thenReturn(dtoStandard(123L));
-        ProductDTO actual = victim.removeProduct(123L);
-        assertEquals(dtoStandard(123L), actual);
-    }
+    public void shouldRemoveProduct() {
+        doNothing().when(repository).deleteProduct(isA(Long.class));
+        victim.removeProduct(123L);
 
-    @Test
-    public void shouldRemoveStandardProductWithDiscount() {
-        when(repository.deleteProduct(123L)).thenReturn(Optional.of(entity));
-        when(beanMapper.toProductDTO(entity)).thenReturn(dtoDiscount(123L));
-        ProductDTO actual = victim.removeProduct(123L);
-        assertEquals(dtoDiscount(123L), actual);
-    }
-
-    @Test
-    public void shouldRemoveStandardProductWithDescription() {
-        when(repository.deleteProduct(123L)).thenReturn(Optional.of(entity));
-        when(beanMapper.toProductDTO(entity)).thenReturn(dtoDescription(123L));
-        ProductDTO actual = victim.removeProduct(123L);
-        assertEquals(dtoDescription(123L), actual);
-    }
-
-    @Test
-    public void shouldRemoveProductWithAllParameters() {
-        when(repository.deleteProduct(123L)).thenReturn(Optional.of(entity));
-        when(beanMapper.toProductDTO(entity)).thenReturn(dtoAllParameters(123L));
-        ProductDTO actual = victim.removeProduct(123L);
-        assertEquals(dtoAllParameters(123L), actual);
+        assertThatThrownBy(() -> victim.findById(123L))
+                .isInstanceOf(ProductNotFoundException.class)
+                .hasMessage(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE);
     }
 
     @Test

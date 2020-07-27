@@ -37,12 +37,12 @@ public class RemoveProduct implements ActionMenu {
         String inputAnswer = scanner.nextLine();
         if (isAgree(inputAnswer)) {
             service.removeProduct(inputNum);
-            System.out.println("Product was successfully deleted");
+            System.out.println("Product deleted successfully");
         }
     }
 
     @Override
-    public String toString() {
+    public String actionName() {
         return "Remove product";
     }
 }

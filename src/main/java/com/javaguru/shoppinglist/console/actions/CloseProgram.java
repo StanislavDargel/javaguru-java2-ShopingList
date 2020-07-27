@@ -11,16 +11,16 @@ public class CloseProgram implements ActionMenu {
     @Override
     public void action() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Are you sure, you want to close a program (Y/N)?");
+        System.out.print("Are you sure, you want to close the program (Y/N)?");
         String inputAnswer = scanner.nextLine();
         if (isAgree(inputAnswer)) {
-            System.out.print("Program was successfully closed");
+            System.out.print("Program closed successfully");
             System.exit(0);
         }
     }
 
     @Override
-    public String toString() {
+    public String actionName() {
         return "Close program";
     }
 }
