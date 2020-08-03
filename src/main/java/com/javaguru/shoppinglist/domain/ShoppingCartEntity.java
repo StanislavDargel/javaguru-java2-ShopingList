@@ -15,8 +15,8 @@ public class ShoppingCartEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "shoppingCart")
-//    @JoinColumn(name = "sc_id")
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "sc_id")
     private Set<ProductEntity> products;
 
     public long getId() {
