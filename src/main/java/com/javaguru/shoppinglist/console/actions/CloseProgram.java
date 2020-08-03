@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Scanner;
 
 @Component
-@Order(4)
+@Order(7)
 public class CloseProgram implements ActionMenu {
     @Override
     public void action() {

@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,10 @@ public class ProductEntity {
     private BigDecimal discount;
     @Column(name = "description")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "sc_id", insertable = false, updatable = false)
+    private ShoppingCartEntity shoppingCart;
 
     public ProductEntity() {
     }
@@ -86,19 +90,20 @@ public class ProductEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ProductEntity)) return false;
-        ProductEntity that = (ProductEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(price, that.price) &&
-                category == that.category &&
-                Objects.equals(discount, that.discount) &&
-                Objects.equals(description, that.description);
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductEntity entity = (ProductEntity) o;
+        return Objects.equals(id, entity.id) &&
+                Objects.equals(name, entity.name) &&
+                Objects.equals(price, entity.price) &&
+                category == entity.category &&
+                Objects.equals(discount, entity.discount) &&
+                Objects.equals(description, entity.description) &&
+                Objects.equals(shoppingCart, entity.shoppingCart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, category, discount, description);
+        return Objects.hash(id, name, price, category, discount, description, shoppingCart);
     }
 
     @Override

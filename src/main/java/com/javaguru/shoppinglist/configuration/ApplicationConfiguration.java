@@ -56,12 +56,11 @@ public class ApplicationConfiguration {
     public Properties hibernateProperties(
             @Value("${hibernate.show_sql}") Boolean showSql,
             @Value("${hibernate.hbm2ddl.auto}") String hbm2ddl,
-            @Value("${hibernate.dialect}") String dialect
-    ) {
+            @Value("${hibernate.dialect}") String dialect) {
         Properties properties = new Properties();
-        properties.put("${hibernate.show_sql}", showSql);
-        properties.put("${hibernate.hbm2ddl.auto}", hbm2ddl);
-        properties.put("${hibernate.dialect}", dialect);
+        properties.put("hibernate.show_sql", showSql);
+        properties.put("hibernate.hbm2ddl.auto", hbm2ddl);
+        properties.put("hibernate.dialect", dialect);
         return properties;
     }
 
