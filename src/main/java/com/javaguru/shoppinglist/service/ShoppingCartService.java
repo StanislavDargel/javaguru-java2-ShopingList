@@ -31,8 +31,8 @@ public class ShoppingCartService {
     public void addProductToShoppingCart(long shoppingCartId, ProductEntity productEntity) {
         ShoppingCartEntity shoppingCart = shoppingCartRepository.findById(shoppingCartId)
                 .orElseThrow(() -> new IllegalArgumentException("Shopping cart with " + shoppingCartId + " doesn't exist"));
-        shoppingCart.getProducts().add(productEntity);
-        shoppingCartRepository.update(shoppingCart);
+        productEntity.setShoppingCart(shoppingCart);
+        shoppingCartRepository.update(productEntity);
     }
 
     private Optional<ShoppingCartEntity> findById(long id) {
