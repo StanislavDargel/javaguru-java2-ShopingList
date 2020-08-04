@@ -1,16 +1,43 @@
 package com.javaguru.shoppinglist.domain;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Entity
+@Table(name = "products")
 public class ProductEntity {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "price")
     private BigDecimal price;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "product_category")
     private ProductCategory category;
+    @Column(name = "discount")
     private BigDecimal discount;
+    @Column(name = "description")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "sc_id", insertable = false, updatable = false)
+    private ShoppingCartEntity shoppingCart;
+
+    public ProductEntity() {
+    }
+
+    private ProductEntity(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.price = builder.price;
+        this.category = builder.category;
+        this.discount = builder.discount;
+        this.description = builder.description;
+    }
 
     public ProductCategory getCategory() {
         return category;
@@ -63,19 +90,20 @@ public class ProductEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ProductEntity)) return false;
-        ProductEntity that = (ProductEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(price, that.price) &&
-                category == that.category &&
-                Objects.equals(discount, that.discount) &&
-                Objects.equals(description, that.description);
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductEntity entity = (ProductEntity) o;
+        return Objects.equals(id, entity.id) &&
+                Objects.equals(name, entity.name) &&
+                Objects.equals(price, entity.price) &&
+                category == entity.category &&
+                Objects.equals(discount, entity.discount) &&
+                Objects.equals(description, entity.description) &&
+                Objects.equals(shoppingCart, entity.shoppingCart);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, category, discount, description);
+        return Objects.hash(id, name, price, category, discount, description, shoppingCart);
     }
 
     @Override
@@ -88,5 +116,61 @@ public class ProductEntity {
                 ", discount=" + discount +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public static class Builder {
+        private Long id;
+        private String name;
+        private BigDecimal price;
+        private ProductCategory category;
+        private BigDecimal discount;
+        private String description;
+
+        public Builder() {
+        }
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setPrice(BigDecimal price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder setCategory(ProductCategory category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder setDiscount(BigDecimal discount) {
+            this.discount = discount;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder of(ProductEntity productEntity) {
+            this.id = productEntity.id;
+            this.name = productEntity.name;
+            this.price = productEntity.price;
+            this.category = productEntity.category;
+            this.discount = productEntity.discount;
+            this.description = productEntity.description;
+            return this;
+        }
+
+        public ProductEntity build() {
+            return new ProductEntity(this);
+        }
     }
 }

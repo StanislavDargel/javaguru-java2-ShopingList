@@ -36,7 +36,7 @@ public class FindProductById implements ActionMenu {
     }
 
     @Override
-    public String toString() {
+    public String actionName() {
         return "Find product by Id";
     }
 }

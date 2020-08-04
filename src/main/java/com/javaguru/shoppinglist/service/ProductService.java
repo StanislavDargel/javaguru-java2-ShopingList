@@ -15,7 +15,9 @@ public class ProductService {
     private final ProductValidationService productValidationService;
     private final BeanMapper beanMapper;
 
-    public ProductService(ProductRepository productRepository, ProductValidationService productValidationService, BeanMapper beanMapper) {
+    public ProductService(ProductRepository productRepository,
+                          ProductValidationService productValidationService,
+                          BeanMapper beanMapper) {
         this.repository = productRepository;
         this.productValidationService = productValidationService;
         this.beanMapper = beanMapper;
@@ -24,8 +26,8 @@ public class ProductService {
     public ProductDTO saveProduct(ProductDTO productDTO) {
         productValidationService.validateProduct(productDTO);
         ProductEntity entity = beanMapper.toProductEntity(productDTO);
-        repository.save(entity);
-        return beanMapper.toProductDTO(entity);
+        ProductEntity output = repository.save(entity);
+        return beanMapper.toProductDTO(output);
     }
 
     public ProductDTO findById(Long id) {
@@ -34,10 +36,8 @@ public class ProductService {
         return beanMapper.toProductDTO(entity);
     }
 
-    public ProductDTO removeProduct(Long id) {
-        ProductEntity removableProduct = repository.deleteProduct(id)
-                .orElseThrow(() -> new ProductNotFoundException(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE));
-        return beanMapper.toProductDTO(removableProduct);
+    public void removeProduct(Long id) {
+        repository.deleteProduct(id);
     }
 
     public ProductDTO changeParameters(Long id, ProductDTO productDTO) {

@@ -52,7 +52,7 @@ public class EditParameters implements ActionMenu {
     }
 
     @Override
-    public String toString() {
+    public String actionName() {
         return "Edit parameters";
     }
 }

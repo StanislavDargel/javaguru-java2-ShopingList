@@ -42,15 +42,10 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void shouldReturnProductWhenProductRemovedByID() {
+    public void shouldRemoveProductByID() {
         victim.save(entityInput());
-        assertEquals(Optional.ofNullable(entityOutput()), victim.deleteProduct(0L));
-    }
-
-    @Test
-    public void shouldReturnNullWhenProductNotDeletedByID() {
-        victim.save(entityInput());
-        assertEquals(Optional.empty(), victim.deleteProduct(10L));
+        victim.deleteProduct(0L);
+        assertEquals(Optional.empty(), victim.findProductById(0L));
     }
 
     @Test

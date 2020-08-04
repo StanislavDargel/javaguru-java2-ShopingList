@@ -40,7 +40,7 @@ public class CreateProduct implements ActionMenu {
     }
 
     @Override
-    public String toString() {
+    public String actionName() {
         return "Create product";
     }
 }
