@@ -24,7 +24,7 @@ public class ConsoleUI {
                 }
                 while (!scanner.hasNextInt()) {
                     System.out.println("Input doesn't match specifications. Try again and enter number from menu.");
-                    System.out.print("\nSelect menu: ");
+                    System.out.println("\nSelect menu: ");
                     scanner.next();
                 }
                 int inputNum = scanner.nextInt();

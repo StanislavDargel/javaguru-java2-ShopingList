@@ -24,8 +24,15 @@ public class ProductEntity {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "sc_id", insertable = false, updatable = false)
-    private ShoppingCartEntity shoppingCart;
+    private ShoppingCartEntity sc;
+
+    public ShoppingCartEntity getShoppingCart() {
+        return sc;
+    }
+
+    public void setShoppingCart(ShoppingCartEntity sc) {
+        this.sc = sc;
+    }
 
     public ProductEntity() {
     }
@@ -98,12 +105,12 @@ public class ProductEntity {
                 category == entity.category &&
                 Objects.equals(discount, entity.discount) &&
                 Objects.equals(description, entity.description) &&
-                Objects.equals(shoppingCart, entity.shoppingCart);
+                Objects.equals(sc, entity.sc);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, category, discount, description, shoppingCart);
+        return Objects.hash(id, name, price, category, discount, description, sc);
     }
 
     @Override
