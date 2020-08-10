@@ -26,7 +26,7 @@ public class ProductNameInput implements ProductParameters {
     }
 
     @Override
-    public String toString() {
+    public String parameterName() {
         return "Product name";
     }
 }

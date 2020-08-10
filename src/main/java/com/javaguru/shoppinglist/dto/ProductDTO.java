@@ -1,9 +1,11 @@
 package com.javaguru.shoppinglist.dto;
 
 import com.javaguru.shoppinglist.domain.ProductCategory;
+import com.javaguru.shoppinglist.domain.ShoppingCartEntity;
 
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Set;
 
 public class ProductDTO {
 
@@ -14,6 +16,7 @@ public class ProductDTO {
     private BigDecimal discount;
     private String description;
     private BigDecimal actualPrice;
+    private Set<ShoppingCartEntity> shoppingCarts;
 
     public BigDecimal getActualPrice() {
         return actualPrice;
@@ -71,10 +74,18 @@ public class ProductDTO {
         this.description = description;
     }
 
+    public Set<ShoppingCartEntity> getShoppingCarts() {
+        return shoppingCarts;
+    }
+
+    public void setShoppingCarts(Set<ShoppingCartEntity> shoppingCarts) {
+        this.shoppingCarts = shoppingCarts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ProductDTO)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         ProductDTO that = (ProductDTO) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
@@ -82,12 +93,13 @@ public class ProductDTO {
                 category == that.category &&
                 Objects.equals(discount, that.discount) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(actualPrice, that.actualPrice);
+                Objects.equals(actualPrice, that.actualPrice) &&
+                Objects.equals(shoppingCarts, that.shoppingCarts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, category, discount, description, actualPrice);
+        return Objects.hash(id, name, price, category, discount, description, actualPrice, shoppingCarts);
     }
 
     @Override
@@ -100,6 +112,7 @@ public class ProductDTO {
                 ", discount=" + discount +
                 ", description='" + description + '\'' +
                 ", actualPrice=" + actualPrice +
+                ", shoppingCarts=" + shoppingCarts +
                 '}';
     }
 }

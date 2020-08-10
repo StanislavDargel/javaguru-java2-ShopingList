@@ -27,9 +27,7 @@ public class HibernateProductRepository implements ProductRepository {
 
     @Override
     public Optional<ProductEntity> findProductById(Long id) {
-        ProductEntity entity = (ProductEntity) sessionFactory.getCurrentSession().createCriteria(ProductEntity.class)
-                .add(Restrictions.eq("id", id))
-                .uniqueResult();
+        ProductEntity entity = sessionFactory.getCurrentSession().find(ProductEntity.class, id);
         return Optional.ofNullable(entity);
     }
 
@@ -43,18 +41,18 @@ public class HibernateProductRepository implements ProductRepository {
 
     @Override
     public void deleteProduct(Long id) {
-        ProductEntity entity = (ProductEntity) sessionFactory.getCurrentSession().createCriteria(ProductEntity.class)
-                .add(Restrictions.eq("id", id))
-                .uniqueResult();
-        sessionFactory.getCurrentSession().delete(entity);
+        ProductEntity productEntity = sessionFactory.getCurrentSession().find(ProductEntity.class, id);
+        productEntity.getShoppingCarts().forEach(shoppingCart -> {
+            shoppingCart.getProducts().remove(productEntity);
+        });
+        ;
+        sessionFactory.getCurrentSession().remove(productEntity);
     }
 
     @Override
     public Optional<ProductEntity> changeProductParameters(Long id, ProductEntity productEntity) {
         sessionFactory.getCurrentSession().update(productEntity);
-        ProductEntity entity = (ProductEntity) sessionFactory.getCurrentSession().createCriteria(ProductEntity.class)
-                .add(Restrictions.eq("id", id))
-                .uniqueResult();
+        ProductEntity entity = sessionFactory.getCurrentSession().find(ProductEntity.class, id);
         return Optional.ofNullable(entity);
     }
 }

@@ -13,5 +13,8 @@ public interface ShoppingCartRepository {
 
     List<ShoppingCartEntity> findAll();
 
-    void update(ProductEntity productEntity);
+    void update(ShoppingCartEntity shoppingCartEntity, ProductEntity productEntity);
+
+    void delete(long id);
+
 }
