@@ -1,6 +1,5 @@
 package com.javaguru.shoppinglist.repository;
 
-import com.javaguru.shoppinglist.domain.ProductEntity;
 import com.javaguru.shoppinglist.domain.ShoppingCartEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -40,8 +39,7 @@ public class HibernateShoppingCartRepository implements ShoppingCartRepository {
     }
 
     @Override
-    public void update(ShoppingCartEntity shoppingCartEntity, ProductEntity entity) {
-        sessionFactory.getCurrentSession().update(entity);
+    public void update(ShoppingCartEntity shoppingCartEntity) {
         sessionFactory.getCurrentSession().update(shoppingCartEntity);
     }
 

@@ -36,7 +36,8 @@ public class ShoppingCartService {
                 .orElseThrow(() -> new IllegalArgumentException("Product with " + productEntityId + " doesn't exist"));
         shoppingCart.getProducts().add(entity);
         entity.getShoppingCarts().add(shoppingCart);
-        shoppingCartRepository.update(shoppingCart, entity);
+        productRepository.updateProduct(entity);
+        shoppingCartRepository.update(shoppingCart);
     }
 
     public void removeShoppingCart(long id) {

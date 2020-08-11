@@ -40,10 +40,11 @@ public class ProductService {
         repository.deleteProduct(id);
     }
 
-    public ProductDTO changeParameters(Long id, ProductDTO productDTO) {
-        ProductEntity entity = beanMapper.toProductEntity(productDTO);
-        ProductEntity changedProduct = repository.changeProductParameters(id, entity)
+    public void productUpdate(Long id, ProductDTO productDTO) {
+        ProductEntity foundedProduct = repository.findProductById(id)
                 .orElseThrow(() -> new ProductNotFoundException(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE));
-        return beanMapper.toProductDTO(changedProduct);
+        ProductEntity entity = beanMapper.toProductEntity(productDTO);
+        entity.setId(foundedProduct.getId());
+        repository.updateProduct(entity);
     }
 }

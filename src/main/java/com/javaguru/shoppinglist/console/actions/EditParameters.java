@@ -45,10 +45,8 @@ public class EditParameters implements ActionMenu {
                 productParameter.inputParameter(foundedProductDTO);
             }
         }
-        ProductDTO changedProduct = service.changeParameters(inputID, foundedProductDTO);
-        normalizer.normalize(changedProduct);
-        String changedProductInfo = productInfo.print(changedProduct);
-        System.out.println(changedProductInfo);
+        service.productUpdate(inputID, foundedProductDTO);
+        System.out.println("Product updated successfully");
     }
 
     @Override
