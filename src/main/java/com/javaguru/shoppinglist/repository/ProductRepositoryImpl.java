@@ -43,10 +43,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Optional<ProductEntity> changeProductParameters(Long id, ProductEntity productEntity) {
-        if (inMemoryDatabase.containsKey(id)) {
-            inMemoryDatabase.put(id, productEntity);
+    public void updateProduct(ProductEntity productEntity) {
+        if (inMemoryDatabase.containsKey(productEntity.getId())) {
+            inMemoryDatabase.put(productEntity.getId(), productEntity);
         }
-        return Optional.ofNullable(inMemoryDatabase.get(id));
     }
 }

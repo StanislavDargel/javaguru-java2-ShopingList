@@ -15,8 +15,13 @@ CREATE TABLE products
     price            DECIMAL(30, 2) NOT NULL,
     discount         DECIMAL(30, 1),
     description      VARCHAR(250),
-    sc_id            BIGINT,
     PRIMARY KEY (id),
-    UNIQUE (name),
-    FOREIGN KEY (sc_id) REFERENCES shopping_cart (id)
+    UNIQUE (name)
+);
+
+CREATE TABLE products_shopping_cart (
+    product_id BIGINT,
+    shopping_cart_id BIGINT,
+    FOREIGN KEY (product_id) REFERENCES products (id),
+    FOREIGN KEY (shopping_cart_id) REFERENCES shopping_cart (id)
 );

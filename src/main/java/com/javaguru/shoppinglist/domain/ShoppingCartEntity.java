@@ -15,7 +15,7 @@ public class ShoppingCartEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "sc")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "shoppingCarts")
     private Set<ProductEntity> products;
 
     public long getId() {
@@ -54,7 +54,7 @@ public class ShoppingCartEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, products);
     }
 
     @Override

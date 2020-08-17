@@ -3,6 +3,7 @@ package com.javaguru.shoppinglist.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -23,51 +24,15 @@ public class ProductEntity {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    private ShoppingCartEntity sc;
-
-    public ShoppingCartEntity getShoppingCart() {
-        return sc;
-    }
-
-    public void setShoppingCart(ShoppingCartEntity sc) {
-        this.sc = sc;
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "products_shopping_cart",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "shopping_cart_id")
+    )
+    private Set<ShoppingCartEntity> shoppingCarts;
 
     public ProductEntity() {
-    }
-
-    private ProductEntity(Builder builder) {
-        this.id = builder.id;
-        this.name = builder.name;
-        this.price = builder.price;
-        this.category = builder.category;
-        this.discount = builder.discount;
-        this.description = builder.description;
-    }
-
-    public ProductCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(ProductCategory category) {
-        this.category = category;
-    }
-
-    public BigDecimal getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(BigDecimal discount) {
-        this.discount = discount;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Long getId() {
@@ -94,35 +59,45 @@ public class ProductEntity {
         this.price = price;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProductEntity entity = (ProductEntity) o;
-        return Objects.equals(id, entity.id) &&
-                Objects.equals(name, entity.name) &&
-                Objects.equals(price, entity.price) &&
-                category == entity.category &&
-                Objects.equals(discount, entity.discount) &&
-                Objects.equals(description, entity.description) &&
-                Objects.equals(sc, entity.sc);
+    public ProductCategory getCategory() {
+        return category;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, price, category, discount, description, sc);
+    public void setCategory(ProductCategory category) {
+        this.category = category;
     }
 
-    @Override
-    public String toString() {
-        return "ProductEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", category=" + category +
-                ", discount=" + discount +
-                ", description='" + description + '\'' +
-                '}';
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Set<ShoppingCartEntity> getShoppingCarts() {
+        return shoppingCarts;
+    }
+
+    public void setShoppingCarts(Set<ShoppingCartEntity> shoppingCarts) {
+        this.shoppingCarts = shoppingCarts;
+    }
+
+    private ProductEntity(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.price = builder.price;
+        this.category = builder.category;
+        this.discount = builder.discount;
+        this.description = builder.description;
     }
 
     public static class Builder {
@@ -179,5 +154,36 @@ public class ProductEntity {
         public ProductEntity build() {
             return new ProductEntity(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductEntity entity = (ProductEntity) o;
+        return Objects.equals(id, entity.id) &&
+                Objects.equals(name, entity.name) &&
+                Objects.equals(price, entity.price) &&
+                category == entity.category &&
+                Objects.equals(discount, entity.discount) &&
+                Objects.equals(description, entity.description) &&
+                Objects.equals(shoppingCarts, entity.shoppingCarts);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, price, category, discount, description);
+    }
+
+    @Override
+    public String toString() {
+        return "ProductEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", category=" + category +
+                ", discount=" + discount +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

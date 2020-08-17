@@ -158,25 +158,19 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionThanProductForRemovingNotFounded() {
-        assertThatThrownBy(() -> victim.removeProduct(any()))
-                .isInstanceOf(ProductNotFoundException.class)
-                .hasMessage(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE);
-    }
-
-    @Test
     public void shouldReplaceProductWithChangedParameters() {
-        when(repository.changeProductParameters(123L, entity))
-                .thenReturn(Optional.of(entity));
+        doNothing().when(repository).updateProduct(isA(ProductEntity.class));
+        when(repository.findProductById(123L)).thenReturn(Optional.of(entity));
         when(beanMapper.toProductEntity(any())).thenReturn(entity);
         when(beanMapper.toProductDTO(entity)).thenReturn(dtoAllParameters(123L));
-        ProductDTO actual = victim.changeParameters(123L, dtoAllParameters(123L));
+        ProductDTO actual = victim.findById(123L);
+        victim.productUpdate(123L, dtoAllParameters(0L));
         assertEquals(dtoAllParameters(123L), actual);
     }
 
     @Test
     public void shouldThrowExceptionWhenProductNotFoundByIdForChangingParameters() {
-        assertThatThrownBy(() -> victim.changeParameters(10L, dtoAllParameters(10L)))
+        assertThatThrownBy(() -> victim.productUpdate(10L, dtoAllParameters(10L)))
                 .isInstanceOf(ProductNotFoundException.class)
                 .hasMessage(ValidationExceptionMessages.PRODUCT_NOT_FOUND_MESSAGE);
     }

@@ -2,18 +2,20 @@ package com.javaguru.shoppinglist.service;
 
 import com.javaguru.shoppinglist.domain.ProductEntity;
 import com.javaguru.shoppinglist.domain.ShoppingCartEntity;
+import com.javaguru.shoppinglist.repository.ProductRepository;
 import com.javaguru.shoppinglist.repository.ShoppingCartRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
+    private final ProductRepository productRepository;
 
-    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository) {
+    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository) {
         this.shoppingCartRepository = shoppingCartRepository;
+        this.productRepository = productRepository;
     }
 
     public ShoppingCartEntity save(ShoppingCartEntity shoppingCartEntity) {
@@ -21,21 +23,24 @@ public class ShoppingCartService {
     }
 
     public ShoppingCartEntity findSoppingCartById(long id) {
-        return shoppingCartRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Shopping cart with id: " + id + "doesn't exist"));
+        return shoppingCartRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Shopping cart with id: " + id + " doesn't exist"));
     }
 
     public List<ShoppingCartEntity> findAllCarts() {
         return shoppingCartRepository.findAll();
     }
 
-    public void addProductToShoppingCart(long shoppingCartId, ProductEntity productEntity) {
-        ShoppingCartEntity shoppingCart = shoppingCartRepository.findById(shoppingCartId)
-                .orElseThrow(() -> new IllegalArgumentException("Shopping cart with " + shoppingCartId + " doesn't exist"));
-        productEntity.setShoppingCart(shoppingCart);
-        shoppingCartRepository.update(productEntity);
+    public void addProductToShoppingCart(long shoppingCartId, long productEntityId) {
+        ShoppingCartEntity shoppingCart = findSoppingCartById(shoppingCartId);
+        ProductEntity entity = productRepository.findProductById(productEntityId)
+                .orElseThrow(() -> new IllegalArgumentException("Product with " + productEntityId + " doesn't exist"));
+        shoppingCart.getProducts().add(entity);
+        entity.getShoppingCarts().add(shoppingCart);
+        productRepository.updateProduct(entity);
+        shoppingCartRepository.update(shoppingCart);
     }
 
-    private Optional<ShoppingCartEntity> findById(long id) {
-        return shoppingCartRepository.findById(id);
+    public void removeShoppingCart(long id) {
+        shoppingCartRepository.delete(id);
     }
 }

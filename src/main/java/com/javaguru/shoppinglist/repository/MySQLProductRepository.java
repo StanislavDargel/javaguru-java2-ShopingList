@@ -3,7 +3,6 @@ package com.javaguru.shoppinglist.repository;
 import com.javaguru.shoppinglist.domain.ProductEntity;
 import com.javaguru.shoppinglist.mapper.ProductEntityRowMapper;
 import org.springframework.context.annotation.Profile;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -77,7 +76,7 @@ public class MySQLProductRepository implements ProductRepository {
     }
 
     @Override
-    public Optional<ProductEntity> changeProductParameters(Long id, ProductEntity productEntity) {
+    public void updateProduct(ProductEntity productEntity) {
         String query = "UPDATE products SET name = ?, product_category = ?," +
                 " price = ?, discount = ?, description = ? WHERE id = ?";
         jdbcTemplate.update(connection -> {
@@ -87,17 +86,9 @@ public class MySQLProductRepository implements ProductRepository {
             preparedStatement.setBigDecimal(3, productEntity.getPrice());
             preparedStatement.setBigDecimal(4, productEntity.getDiscount());
             preparedStatement.setString(5, productEntity.getDescription());
-            preparedStatement.setLong(6, id);
+            preparedStatement.setLong(6, productEntity.getId());
             preparedStatement.executeUpdate();
             return preparedStatement;
         });
-        ProductEntity entity = new ProductEntity();
-        entity.setId(id);
-        entity.setName(productEntity.getName());
-        entity.setCategory(productEntity.getCategory());
-        entity.setPrice(productEntity.getPrice());
-        entity.setDiscount(productEntity.getDiscount());
-        entity.setDescription(productEntity.getDescription());
-        return Optional.ofNullable(entity);
     }
 }

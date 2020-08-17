@@ -15,6 +15,7 @@ public class BeanMapper {
         dto.setPrice(productEntity.getPrice());
         dto.setDiscount(productEntity.getDiscount());
         dto.setDescription(productEntity.getDescription());
+        dto.setShoppingCarts(productEntity.getShoppingCarts());
         return dto;
     }
 
@@ -26,6 +27,7 @@ public class BeanMapper {
         entity.setPrice(productDTO.getPrice());
         entity.setDiscount(productDTO.getDiscount());
         entity.setDescription(productDTO.getDescription());
+        entity.setShoppingCarts(productDTO.getShoppingCarts());
         return entity;
     }
 }

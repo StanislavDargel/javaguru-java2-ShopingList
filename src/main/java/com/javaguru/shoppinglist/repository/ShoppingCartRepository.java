@@ -1,6 +1,5 @@
 package com.javaguru.shoppinglist.repository;
 
-import com.javaguru.shoppinglist.domain.ProductEntity;
 import com.javaguru.shoppinglist.domain.ShoppingCartEntity;
 
 import java.util.List;
@@ -13,5 +12,8 @@ public interface ShoppingCartRepository {
 
     List<ShoppingCartEntity> findAll();
 
-    void update(ProductEntity productEntity);
+    void update(ShoppingCartEntity shoppingCartEntity);
+
+    void delete(long id);
+
 }

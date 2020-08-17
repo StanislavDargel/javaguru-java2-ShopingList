@@ -51,13 +51,19 @@ public class ProductRepositoryTest {
     @Test
     public void shouldReplaceProductWithChangedParameters() {
         victim.save(entityInput());
-        assertEquals(Optional.ofNullable(entityOutput()), victim.changeProductParameters(0L, entityOutput()));
+        ProductEntity savedEntity = entityOutput();
+        savedEntity.setName("TEST");
+        victim.updateProduct(savedEntity);
+        assertEquals(victim.findProductById(0L), Optional.ofNullable(savedEntity));
     }
 
     @Test
     public void shouldReturnNullWhenProductNotFoundByIdForChangingParameters() {
         victim.save(entityInput());
-        assertEquals(Optional.empty(), victim.changeProductParameters(20L, entityOutput()));
+        ProductEntity entityWithIncorrectId = entityOutput();
+        entityWithIncorrectId.setId(20L);
+        victim.updateProduct(entityWithIncorrectId);
+        assertEquals(Optional.empty(), victim.findProductById(20L));
     }
 
     private ProductEntity entityInput() {

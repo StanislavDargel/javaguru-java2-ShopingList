@@ -39,16 +39,14 @@ public class EditParameters implements ActionMenu {
         String foundedProductInfo = productInfo.print(foundedProductDTO);
         System.out.println(foundedProductInfo);
         for (ProductParameters productParameter : productParameters) {
-            System.out.print("Edit " + productParameter + " (Y/N)?");
+            System.out.print("Edit " + productParameter.parameterName() + " (Y/N)?");
             String inputAnswer = scanner.nextLine();
             if (isAgree(inputAnswer)) {
                 productParameter.inputParameter(foundedProductDTO);
             }
         }
-        ProductDTO changedProduct = service.changeParameters(inputID, foundedProductDTO);
-        normalizer.normalize(changedProduct);
-        String changedProductInfo = productInfo.print(changedProduct);
-        System.out.println(changedProductInfo);
+        service.productUpdate(inputID, foundedProductDTO);
+        System.out.println("Product updated successfully");
     }
 
     @Override

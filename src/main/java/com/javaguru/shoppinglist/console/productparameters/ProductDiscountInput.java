@@ -30,7 +30,7 @@ public class ProductDiscountInput implements ProductParameters {
     }
 
     @Override
-    public String toString() {
+    public String parameterName() {
         return "Product discount";
     }
 }

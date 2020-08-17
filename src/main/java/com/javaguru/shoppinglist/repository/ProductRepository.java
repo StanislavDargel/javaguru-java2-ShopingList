@@ -13,7 +13,7 @@ public interface ProductRepository {
 
     void deleteProduct(Long id);
 
-    Optional<ProductEntity> changeProductParameters(Long id, ProductEntity productEntity);
+    void updateProduct(ProductEntity productEntity);
 
 
 }
